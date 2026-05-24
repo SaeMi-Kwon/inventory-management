@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inventory.mapper.WarehouseMapper">
+
+    <!-- 창고코드 중복 체크 -->
+    <select id="countByWarehouseCode" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM WAREHOUSES WHERE WAREHOUSE_CODE = #{warehouseCode}
+    </select>
+
+    <!-- 창고 등록 -->
+    <insert id="insertWarehouse" parameterType="com.inventory.dto.WarehouseDTO">
+
+        INSERT INTO WAREHOUSES (
+            WAREHOUSE_CODE, WAREHOUSE_NAME, LOCATION, REMARK
+        ) VALUES (
+            #{warehouseCode}, #{warehouseName}, #{location}, #{remark}
+        )
+    </insert>
+
+    <select id="findWarehouseList" parameterType="com.inventory.dto.WarehouseDTO" resultType="com.inventory.dto.WarehouseDTO">
+        SELECT
+            WAREHOUSE_ID AS warehouseId, WAREHOUSE_CODE AS warehouseCode, WAREHOUSE_NAME AS warehouseName,
+            LOCATION AS location, USE_YN AS useYn, REMARK AS remark, CREATED_AT AS createdAt
+        FROM WAREHOUSES
+        WHERE 1=1
+
+        <if test="warehouseCode != null and warehouseCode != ''">
+            AND WAREHOUSE_CODE LIKE CONCAT('%', #{warehouseCode}, '%')
+        </if>
+
+        <if test="warehouseName != null and warehouseName != ''">
+            AND WAREHOUSE_NAME LIKE CONCAT('%', #{warehouseName}, '%')
+        </if>
+
+        <if test="useYn != null and useYn != ''">
+            AND USE_YN = #{useYn}
+        </if>
+
+        ORDER BY WAREHOUSE_ID DESC
+    </select>
+
+    <!-- 창고 단건 조회 -->
+    <select id="findWarehouseById" parameterType="long" resultType="com.inventory.dto.WarehouseDTO">
+        SELECT
+            WAREHOUSE_ID AS warehouseId,
+            WAREHOUSE_CODE AS warehouseCode,
+            WAREHOUSE_NAME AS warehouseName,
+            LOCATION AS location,
+            USE_YN AS useYn,
+            REMARK AS remark,
+            CREATED_AT AS createdAt
+        FROM WAREHOUSES
+        WHERE WAREHOUSE_ID = #{warehouseId}
+    </select>
+
+    <!-- 창고 수정 -->
+    <update id="updateWarehouse" parameterType="com.inventory.dto.WarehouseDTO">
+
+        UPDATE WAREHOUSES
+        SET
+            WAREHOUSE_NAME = #{warehouseName},
+            LOCATION = #{location},
+            USE_YN = #{useYn},
+            REMARK = #{remark}
+        WHERE WAREHOUSE_ID = #{warehouseId}
+
+    </update>
+
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inventory.mapper.UserMapper">
+
+    <!-- 권한 목록 조회 -->
+    <select id="findAuthorityList" resultType="com.inventory.dto.CustomerDTO">
+        SELECT
+            AUTH_ID AS authId, AUTH_CODE AS authCode,
+            AUTH_NAME AS authName, DESCRIPTION AS description
+        FROM AUTHORITY_CODE
+        WHERE USE_YN = 'Y'
+        ORDER BY AUTH_ID
+    </select>
+
+    <!-- 사번 중복체크 -->
+    <select id="countByEmployeeId" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM USERS WHERE EMPLOYEE_ID = #{employeeId}
+    </select>
+
+    <!-- 사용자 등록 -->
+    <insert id="insertUser" parameterType="com.inventory.dto.UserDTO">
+        INSERT INTO USERS (
+            AUTH_ID, EMPLOYEE_ID, PASSWORD, DEPARTMENT, NAME,
+            BIRTH, PHONE, EMAIL, ADDRESS, HIRE_DATE, REMARK
+        ) VALUES (
+            #{authId}, #{employeeId}, #{password}, #{department}, #{name},
+            #{birth}, #{phone}, #{email}, #{address}, #{hireDate}, #{remark}
+        )
+    </insert>
+
+    <!-- 사용자 목록 검색 조회 -->
+    <select id="findUserList" parameterType="com.inventory.dto.UserDTO" resultType="com.inventory.dto.UserDTO">
+        SELECT
+            U.USER_ID AS userId, U.AUTH_ID AS authId, U.EMPLOYEE_ID AS employeeId,
+            U.DEPARTMENT AS department, U.NAME AS name, U.BIRTH AS birth, U.PHONE AS phone,
+            U.EMAIL AS email, U.ADDRESS AS address, U.HIRE_DATE AS hireDate,
+            U.RETIRE_DATE AS retireDate, U.STATUS AS status, U.USE_YN AS useYn,
+            U.REMARK AS remark, U.CREATED_AT AS createdAt, U.UPDATED_AT AS updatedAt,
+            A.AUTH_CODE AS authCode, A.AUTH_NAME AS authName
+        FROM USERS U
+        JOIN AUTHORITY_CODE A
+        ON U.AUTH_ID = A.AUTH_ID
+        WHERE 1=1
+
+        <if test="name != null and name != ''">
+            AND U.NAME LIKE CONCAT('%', #{name}, '%')
+        </if>
+
+        <if test="authId != null">
+            AND U.AUTH_ID = #{authId}
+        </if>
+
+        <if test="status != null and status != ''">
+            AND U.STATUS = #{status}
+        </if>
+
+        <if test="useYn != null and useYn != ''">
+            AND U.USE_YN = #{useYn}
+        </if>
+
+        ORDER BY U.USER_ID DESC
+    </select>
+
+    <!-- 사용자 상세 조회 -->
+    <select id="findUserById" parameterType="long" resultType="com.inventory.dto.UserDTO">
+
+        SELECT
+            U.USER_ID AS userId, U.AUTH_ID AS authId, U.EMPLOYEE_ID AS employeeId,
+            U.DEPARTMENT AS department, U.NAME AS name, U.BIRTH AS birth, U.PHONE AS phone,
+            U.EMAIL AS email, U.ADDRESS AS address, U.HIRE_DATE AS hireDate,
+            U.RETIRE_DATE AS retireDate, U.STATUS AS status, U.USE_YN AS useYn,
+            U.REMARK AS remark, U.CREATED_AT AS createdAt, U.UPDATED_AT AS updatedAt,
+            A.AUTH_CODE AS authCode, A.AUTH_NAME AS authName
+        FROM USERS U
+        JOIN AUTHORITY_CODE A
+        ON U.AUTH_ID = A.AUTH_ID
+        WHERE U.USER_ID = #{userId}
+    </select>
+
+    <!-- 사용자 수정 -->
+    <update id="updateUser" parameterType="com.inventory.dto.UserDTO">
+        UPDATE USERS
+        SET
+            AUTH_ID = #{authId},
+            DEPARTMENT = #{department},
+            NAME = #{name},
+            BIRTH = #{birth},
+            PHONE = #{phone},
+            EMAIL = #{email},
+            ADDRESS = #{address},
+            HIRE_DATE = #{hireDate},
+            RETIRE_DATE = #{retireDate},
+            STATUS = #{status},
+            USE_YN = #{useYn},
+            REMARK = #{remark}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <!-- 비밀번호 초기화 -->
+    <update id="resetPassword" parameterType="com.inventory.dto.UserDTO">
+        UPDATE USERS
+        SET
+            PASSWORD = #{password}
+        WHERE USER_ID = #{userId}
+    </update>
+
+
+</mapper>
