@@ -107,5 +107,16 @@
         WHERE USER_ID = #{userId}
     </update>
 
+    <!-- 로그인 -->
+    <select id="findUserByEmployeeId" parameterType="string" resultType="com.inventory.dto.UserDTO">
+        SELECT
+            U.USER_ID AS userId, U.AUTH_ID AS authId, U.EMPLOYEE_ID AS employeeId,
+            U.PASSWORD AS password, U.NAME AS name, U.DEPARTMENT AS department,
+            U.STATUS AS status, U.USE_YN AS useYn, A.AUTH_CODE AS authCode, A.AUTH_NAME AS authName
+        FROM USERS U
+        JOIN AUTHORITY_CODE A ON U.AUTH_ID = A.AUTH_ID
+        WHERE U.EMPLOYEE_ID = #{employeeId}
+
+    </select>
 
 </mapper>

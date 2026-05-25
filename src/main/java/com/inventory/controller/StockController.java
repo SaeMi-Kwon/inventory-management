@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -66,4 +67,25 @@ public class StockController {
 
         return "common/layout";
     }
+
+    // 재고 수정 화면
+    @GetMapping("/edit/{stockId}")
+    public String editForm(@PathVariable("stockId") Long stockId, Model model) {
+
+        model.addAttribute("stock", stockService.findStockById(stockId));
+        model.addAttribute("contentPage", "/WEB-INF/views/stocks/edit.jsp");
+
+        return "common/layout";
+    }
+
+    // 재고 수정 처리
+    @PostMapping("/edit/{stockId}")
+    public String edit(@PathVariable("stockId") Long stockId, StockDTO stockDTO) {
+
+        stockDTO.setStockId(stockId);
+        stockService.updateStock(stockDTO);
+
+        return "redirect:/stocks/list";
+    }
+
 }

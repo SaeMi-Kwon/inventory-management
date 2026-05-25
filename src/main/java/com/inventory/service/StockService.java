@@ -1,6 +1,7 @@
 package com.inventory.service;
 
 import com.inventory.dto.StockDTO;
+import com.inventory.dto.StockEditDTO;
 import com.inventory.dto.StockListDTO;
 import com.inventory.exception.CustomException;
 import com.inventory.exception.ErrorCode;
@@ -16,7 +17,7 @@ public class StockService {
 
     private final StockMapper stockMapper;
 
-    // 현재고 등록
+    // 재고 등록
     public void registerStock(StockDTO stockDTO) {
 
         // 중복 체크
@@ -27,8 +28,19 @@ public class StockService {
         stockMapper.insertStock(stockDTO);
     }
 
+    // 재고 목록 + 검색
     public List<StockListDTO> findStockList(StockListDTO searchDTO) {
         return stockMapper.findStockList(searchDTO);
+    }
+
+    // 재고 단건 조회
+    public StockEditDTO findStockById(Long stockId) {
+        return stockMapper.findStockById(stockId);
+    }
+
+    // 재고 수정
+    public void updateStock(StockDTO stockDTO) {
+        stockMapper.updateStock(stockDTO);
     }
 
 }

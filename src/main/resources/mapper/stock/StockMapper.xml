@@ -61,4 +61,23 @@
 
     </select>
 
+    <select id="findStockById" parameterType="long" resultType="com.inventory.dto.StockEditDTO">
+        SELECT
+            S.STOCK_ID AS stockId, S.ITEM_ID AS itemId, S.WAREHOUSE_ID AS warehouseId,
+            S.QUANTITY AS quantity, S.SAFETY_STOCK AS safetyStock, I.ITEM_CODE AS itemCode,
+            I.ITEM_NAME AS itemName, W.WAREHOUSE_NAME AS warehouseName
+        FROM STOCKS S
+        JOIN ITEMS I ON S.ITEM_ID = I.ITEM_ID
+        JOIN WAREHOUSES W ON S.WAREHOUSE_ID = W.WAREHOUSE_ID
+        WHERE S.STOCK_ID = #{stockId}
+    </select>
+
+    <update id="updateStock" parameterType="com.inventory.dto.StockDTO">
+        UPDATE STOCKS
+        SET
+            QUANTITY = IFNULL(#{quantity}, 0),
+            SAFETY_STOCK = IFNULL(#{safetyStock}, 0)
+        WHERE STOCK_ID = #{stockId}
+    </update>
+
 </mapper>

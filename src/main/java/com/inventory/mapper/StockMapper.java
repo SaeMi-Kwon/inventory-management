@@ -1,6 +1,7 @@
 package com.inventory.mapper;
 
 import com.inventory.dto.StockDTO;
+import com.inventory.dto.StockEditDTO;
 import com.inventory.dto.StockListDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,5 +15,9 @@ public interface StockMapper {
     int countByItemAndWarehouse(StockDTO stockDTO);
 
     List<StockListDTO> findStockList(StockListDTO searchDTO);
+
+    StockEditDTO findStockById(Long stockId);
+
+    int updateStock(StockDTO stockDTO);
 
 }

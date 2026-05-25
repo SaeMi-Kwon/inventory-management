@@ -116,7 +116,7 @@
                     <!-- 데이터 있을 때 -->
                     <c:forEach var="stock" items="${stockList}">
 
-                        <tr>
+                        <tr style="cursor:pointer;" onclick="location.href='/stocks/edit/${stock.stockId}'">
 
                             <td>${stock.itemCode}</td>
                             <td>${stock.itemName}</td>

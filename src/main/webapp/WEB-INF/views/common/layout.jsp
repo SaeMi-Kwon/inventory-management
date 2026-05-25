@@ -178,10 +178,16 @@
         <div class="border-bottom p-3 d-flex justify-content-between align-items-center">
             <strong>재고관리 시스템</strong>
 
-            <div>
-                <span class="me-3">로그인 사용자</span>
-                <button class="btn btn-sm btn-outline-secondary">로그아웃</button>
+            <div class="d-flex align-items-center">
+
+                <span class="me-3">${sessionScope.loginUser.name} 님</span>
+
+                <a href="/logout" class="btn btn-outline-danger btn-sm">
+                    로그아웃
+                </a>
+
             </div>
+
         </div>
 
         <!-- Content -->

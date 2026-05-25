@@ -2,6 +2,7 @@ package com.inventory.service;
 
 
 import com.inventory.dto.CustomerDTO;
+import com.inventory.dto.LoginDTO;
 import com.inventory.dto.UserDTO;
 import com.inventory.exception.CustomException;
 import com.inventory.exception.ErrorCode;
@@ -63,4 +64,23 @@ public class UserService {
         userMapper.resetPassword(userDTO);
     }
 
+    // 로그인
+    public UserDTO login(LoginDTO loginDTO) {
+
+        UserDTO user = userMapper.findUserByEmployeeId(loginDTO.getEmployeeId());
+
+        if (user == null) {
+            throw new CustomException(ErrorCode.LOGIN_FAIL);
+        }
+
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            throw new CustomException(ErrorCode.LOGIN_FAIL);
+        }
+
+        if (!"Y".equals(user.getUseYn())) {
+            throw new CustomException(ErrorCode.NOT_ACTIVE_USER);
+        }
+
+        return user;
+    }
 }

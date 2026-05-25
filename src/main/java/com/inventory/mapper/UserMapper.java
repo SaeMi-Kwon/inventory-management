@@ -23,4 +23,6 @@ public interface UserMapper {
 
     int resetPassword(UserDTO userDTO);
 
+    //로그인
+    UserDTO findUserByEmployeeId(String employeeId);
 }
