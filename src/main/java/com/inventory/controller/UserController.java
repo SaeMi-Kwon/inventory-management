@@ -35,6 +35,7 @@ public class UserController {
         try {
             userService.registerUser(userDTO);
 
+            // redirect - 등록 후 새로고침했을 때 같은 데이터가 다시 등록되는 걸 막기 위해
             return "redirect:/users/register?success=true";
 
         }catch (CustomException e){

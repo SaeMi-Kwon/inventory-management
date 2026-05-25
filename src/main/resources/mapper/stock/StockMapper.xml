@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inventory.mapper.StockMapper">
+
+    <!-- 재고 등록 -->
+    <insert id="insertStock" parameterType="com.inventory.dto.StockDTO">
+
+        INSERT INTO STOCKS (
+            ITEM_ID, WAREHOUSE_ID, QUANTITY, SAFETY_STOCK
+        ) VALUES (
+        #{itemId}, #{warehouseId}, IFNULL(#{quantity}, 0), IFNULL(#{safetyStock}, 0)
+        )
+    </insert>
+
+    <!-- 재고 중복 체크 -->
+    <select id="countByItemAndWarehouse" parameterType="com.inventory.dto.StockDTO" resultType="int">
+        SELECT COUNT(*) FROM STOCKS
+        WHERE ITEM_ID = #{itemId}
+        AND WAREHOUSE_ID = #{warehouseId}
+    </select>
+
+    <!-- 현재고 목록 조회 -->
+    <select id="findStockList" parameterType="com.inventory.dto.StockListDTO" resultType="com.inventory.dto.StockListDTO">
+        SELECT
+            S.STOCK_ID AS stockId, I.ITEM_CODE AS itemCode, I.ITEM_NAME AS itemName,
+            W.WAREHOUSE_NAME AS warehouseName, S.QUANTITY AS quantity, S.SAFETY_STOCK AS safetyStock
+        FROM STOCKS S
+        JOIN ITEMS I ON S.ITEM_ID = I.ITEM_ID
+        JOIN WAREHOUSES W ON S.WAREHOUSE_ID = W.WAREHOUSE_ID
+        WHERE 1=1
+
+        <if test="itemCode != null and itemCode != ''">
+            AND I.ITEM_CODE LIKE CONCAT('%', #{itemCode}, '%')
+        </if>
+
+        <if test="itemName != null and itemName != ''">
+            AND I.ITEM_NAME LIKE CONCAT('%', #{itemName}, '%')
+        </if>
+
+        <if test="warehouseName != null and warehouseName != ''">
+            AND W.WAREHOUSE_NAME LIKE CONCAT('%', #{warehouseName}, '%')
+        </if>
+
+        <if test="stockStatus == 'SOLD_OUT'">
+            AND S.QUANTITY = 0
+        </if>
+
+        <if test="stockStatus == 'LOW'">
+            AND S.QUANTITY > 0 AND S.QUANTITY &lt;= S.SAFETY_STOCK
+        </if>
+
+        <if test="stockStatus == 'NORMAL'">
+            AND S.QUANTITY > S.SAFETY_STOCK
+        </if>
+
+        ORDER BY I.ITEM_CODE ASC, W.WAREHOUSE_NAME ASC
+
+    </select>
+
+</mapper>

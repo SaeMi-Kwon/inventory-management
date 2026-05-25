@@ -42,19 +42,25 @@
                 </div>
             </li>
 
-            <!-- 창고관리 -->
+            <!-- 재고관리 -->
             <li class="nav-item">
-                <a class="nav-link text-white" data-bs-toggle="collapse" href="#warehouseMenu" role="button">
-                    창고관리
+                <a class="nav-link text-white" data-bs-toggle="collapse" href="#stockMenu" role="button">
+                    재고관리
                 </a>
 
-                <div class="collapse" id="warehouseMenu">
+                <div class="collapse" id="stockMenu">
                     <ul class="nav flex-column ms-3">
                         <li class="nav-item">
-                            <a href="/warehouses/register" class="nav-link text-white">창고등록</a>
+                            <a href="/stocks/register" class="nav-link text-white">재고등록</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/warehouses/list" class="nav-link text-white">창고목록</a>
+                            <a href="/stocks/list" class="nav-link text-white">재고현황</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/stocks/adjust" class="nav-link text-white">재고조정</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/stock-histories/list" class="nav-link text-white">재고이력조회</a>
                         </li>
                     </ul>
                 </div>
@@ -102,22 +108,19 @@
                 </div>
             </li>
 
-            <!-- 재고관리 -->
+            <!-- 창고관리 -->
             <li class="nav-item">
-                <a class="nav-link text-white" data-bs-toggle="collapse" href="#stockMenu" role="button">
-                    재고관리
+                <a class="nav-link text-white" data-bs-toggle="collapse" href="#warehouseMenu" role="button">
+                    창고관리
                 </a>
 
-                <div class="collapse" id="stockMenu">
+                <div class="collapse" id="warehouseMenu">
                     <ul class="nav flex-column ms-3">
                         <li class="nav-item">
-                            <a href="/stocks/list" class="nav-link text-white">재고현황</a>
+                            <a href="/warehouses/register" class="nav-link text-white">창고등록</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/stocks/adjust" class="nav-link text-white">재고조정</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/stock-histories/list" class="nav-link text-white">재고이력조회</a>
+                            <a href="/warehouses/list" class="nav-link text-white">창고목록</a>
                         </li>
                     </ul>
                 </div>

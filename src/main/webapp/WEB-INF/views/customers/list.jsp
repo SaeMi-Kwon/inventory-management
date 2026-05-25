@@ -14,32 +14,20 @@
     <form action="/customers/list" method="get" class="row g-2 mb-4">
 
         <div class="col-md-2">
-            <input type="text"
-                   name="customerCode"
-                   class="form-control"
-                   placeholder="거래처코드"
-                   value="${searchDTO.customerCode}">
+            <input type="text" name="customerCode" class="form-control" placeholder="거래처코드" value="${searchDTO.customerCode}">
         </div>
 
         <div class="col-md-3">
-            <input type="text"
-                   name="customerName"
-                   class="form-control"
-                   placeholder="거래처명"
-                   value="${searchDTO.customerName}">
+            <input type="text" name="customerName" class="form-control" placeholder="거래처명" value="${searchDTO.customerName}">
         </div>
 
         <div class="col-md-2">
             <select name="customerType" class="form-select">
                 <option value="">거래처유형 전체</option>
-
-                <option value="SUPPLIER"
-                    ${searchDTO.customerType == 'SUPPLIER' ? 'selected' : ''}>
+                <option value="SUPPLIER" ${searchDTO.customerType == 'SUPPLIER' ? 'selected' : ''}>
                     공급처
                 </option>
-
-                <option value="BUYER"
-                    ${searchDTO.customerType == 'BUYER' ? 'selected' : ''}>
+                <option value="BUYER" ${searchDTO.customerType == 'BUYER' ? 'selected' : ''}>
                     구매처
                 </option>
             </select>
@@ -48,14 +36,10 @@
         <div class="col-md-2">
             <select name="useYn" class="form-select">
                 <option value="">사용여부 전체</option>
-
-                <option value="Y"
-                    ${searchDTO.useYn == 'Y' ? 'selected' : ''}>
+                <option value="Y" ${searchDTO.useYn == 'Y' ? 'selected' : ''}>
                     사용
                 </option>
-
-                <option value="N"
-                    ${searchDTO.useYn == 'N' ? 'selected' : ''}>
+                <option value="N" ${searchDTO.useYn == 'N' ? 'selected' : ''}>
                     미사용
                 </option>
             </select>
@@ -104,11 +88,10 @@
                         </tr>
                     </c:if>
 
-                    <c:forEach var="customer"
-                               items="${customerList}"
-                               varStatus="status">
+                    <c:forEach var="customer" items="${customerList}" varStatus="status">
 
                         <tr style="cursor:pointer;" onclick="location.href='/customers/detail/${customer.customerId}'">
+
                             <td>${status.count}</td>
                             <td>${customer.customerCode}</td>
                             <td>${customer.customerName}</td>
@@ -131,8 +114,21 @@
                             <td>${customer.ceoName}</td>
                             <td>${customer.phone}</td>
                             <td>${customer.managerName}</td>
-                            <td>${customer.useYn}</td>
+                            
+                            <td>
+                                <c:choose>
+                                    <c:when test="${customer.useYn == 'Y'}">
+                                        사용
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        미사용
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+
                             <td>${customer.createdAt}</td>
+
                         </tr>
 
                     </c:forEach>

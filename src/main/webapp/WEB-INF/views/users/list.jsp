@@ -162,45 +162,28 @@
 
                         <tr style="cursor:pointer;" onclick="location.href='/users/detail/${user.userId}'">
 
-                            <td>
-                                ${status.count}
-                            </td>
+                            <td>${status.count}</td>
+                            <td>${user.employeeId}</td>
+                            <td>${user.name}</td>
+                            <td>${user.authName}</td>
+                            <td>${user.department}</td>
+                            <td>${user.phone}</td>
+                            <td>${user.email}</td>
+                            <td>${user.status}</td>
 
                             <td>
-                                ${user.employeeId}
+                                <c:choose>
+                                    <c:when test="${user.useYn == 'Y'}">
+                                        사용
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        미사용
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
 
-                            <td>
-                                ${user.name}
-                            </td>
-                       
-                            <td>
-                                ${user.authName}
-                            </td>
-
-                            <td>
-                                ${user.department}
-                            </td>
-
-                            <td>
-                                ${user.phone}
-                            </td>
-
-                            <td>
-                                ${user.email}
-                            </td>
-
-                            <td>
-                                ${user.status}
-                            </td>
-
-                            <td>
-                                ${user.useYn}
-                            </td>
-
-                            <td>
-                                ${user.createdAt}
-                            </td>
+                            <td>${user.createdAt}</td>
 
                         </tr>
 

@@ -72,19 +72,34 @@
                         </tr>
                     </c:if>
 
-                    <c:forEach var="warehouse"
-                               items="${warehouseList}"
-                               varStatus="status">
+                    <c:forEach var="warehouse" items="${warehouseList}" varStatus="status">
+
                         <tr style="cursor:pointer;" onclick="location.href='/warehouses/edit/${warehouse.warehouseId}'">
+
                             <td>${status.count}</td>
                             <td>${warehouse.warehouseCode}</td>
                             <td>${warehouse.warehouseName}</td>
                             <td>${warehouse.location}</td>
-                            <td>${warehouse.useYn}</td>
+
+                            <td>
+                                <c:choose>
+                                    <c:when test="${warehouse.useYn == 'Y'}">
+                                        사용
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        미사용
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+
                             <td>${warehouse.remark}</td>
                             <td>${warehouse.createdAt}</td>
+
                         </tr>
+
                     </c:forEach>
+                    
                 </tbody>
             </table>
 
