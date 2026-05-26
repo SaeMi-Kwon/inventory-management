@@ -80,4 +80,22 @@
         WHERE STOCK_ID = #{stockId}
     </update>
 
+    <!-- 품목 + 창고 기준 재고 조회 -->
+    <select id="findStockByItemAndWarehouse" parameterType="com.inventory.dto.StockDTO" resultType="com.inventory.dto.StockDTO">
+        SELECT
+            STOCK_ID AS stockId, ITEM_ID AS itemId, WAREHOUSE_ID AS warehouseId, QUANTITY AS quantity,
+            SAFETY_STOCK AS safetyStock, CREATED_AT AS createdAt, UPDATED_AT AS updatedAt
+        FROM STOCKS
+        WHERE ITEM_ID = #{itemId} AND WAREHOUSE_ID = #{warehouseId}
+
+    </select>
+
+    <!-- 재고 증가 -->
+    <update id="increaseStock" parameterType="com.inventory.dto.StockDTO">
+        UPDATE STOCKS
+        SET
+            QUANTITY = QUANTITY + #{quantity}
+        WHERE ITEM_ID = #{itemId} AND WAREHOUSE_ID = #{warehouseId}
+    </update>
+
 </mapper>

@@ -6,10 +6,10 @@
     <!-- 제목 -->
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h3>현재고 목록</h3>
+        <h3>재고 목록</h3>
 
         <a href="/stocks/register" class="btn btn-primary">
-            현재고 등록
+            재고 등록
         </a>
 
     </div>
@@ -106,7 +106,7 @@
 
                         <tr>
                             <td colspan="6">
-                                등록된 현재고가 없습니다.
+                                등록된 재고가 없습니다.
                             </td>
                         </tr>
 

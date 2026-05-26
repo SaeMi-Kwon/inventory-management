@@ -27,8 +27,7 @@
 
             <!-- 품목관리 -->
             <li class="nav-item">
-                <button class="accordion-button collapsed bg-dark text-white border-0 shadow-none"
-                    type="button" data-bs-toggle="collapse" href="#itemMenu">품목관리</button>
+                <button class="nav-link text-white" data-bs-toggle="collapse" href="#itemMenu">품목관리</button>
 
                 <div class="collapse" id="itemMenu">
                     <ul class="nav flex-column ms-3">

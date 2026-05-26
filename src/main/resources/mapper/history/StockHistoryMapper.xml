@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inventory.mapper.StockHistoryMapper">
+
+    <insert id="insertStockHistory" parameterType="com.inventory.dto.StockHistoryDTO">
+        INSERT INTO STOCK_HISTORIES (
+            ITEM_ID, WAREHOUSE_ID, HISTORY_TYPE, INBOUND_ID, OUTBOUND_ID, BEFORE_QUANTITY,
+            CHANGE_QUANTITY, AFTER_QUANTITY, PROCESS_USER_ID, REMARK
+        ) VALUES (
+            #{itemId}, #{warehouseId}, #{historyType}, #{inboundId}, #{outboundId}, #{beforeQuantity},
+            #{changeQuantity}, #{afterQuantity}, #{processUserId}, #{remark}
+        )
+
+    </insert>
+
+</mapper>

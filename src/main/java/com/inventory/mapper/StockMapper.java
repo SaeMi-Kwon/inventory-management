@@ -20,4 +20,10 @@ public interface StockMapper {
 
     int updateStock(StockDTO stockDTO);
 
+    // 현재 창고에 해당 품목 재고 있는지 조회
+    StockDTO findStockByItemAndWarehouse(StockDTO stockDTO);
+
+    // 재고 증가
+    int increaseStock(StockDTO stockDTO);
+
 }

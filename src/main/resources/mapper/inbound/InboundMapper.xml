@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inventory.mapper.InboundMapper">
+
+    <!-- 입고 등록 -->
+    <insert id="insertInbound" parameterType="com.inventory.dto.InboundDTO"
+            useGeneratedKeys="true" keyProperty="inboundId">
+
+        INSERT INTO INBOUNDS (
+            INBOUND_NO, INBOUND_TYPE, CUSTOMER_ID, WAREHOUSE_ID,
+            INBOUND_DATE, CREATED_USER_ID, REMARK
+        ) VALUES (
+            #{inboundNo}, #{inboundType}, #{customerId}, #{warehouseId},
+            #{inboundDate}, #{createdUserId}, #{remark}
+        )
+    </insert>
+
+    <!-- 입고 상세 등록 -->
+    <insert id="insertInboundDetail" parameterType="com.inventory.dto.InboundDetailDTO">
+
+        INSERT INTO INBOUND_DETAILS (
+            INBOUND_ID, ITEM_ID, QUANTITY, UNIT_PRICE, TOTAL_PRICE, REMARK
+        ) VALUES (
+            #{inboundId}, #{itemId}, IFNULL(#{quantity}, 0),
+            IFNULL(#{unitPrice}, 0.00), IFNULL(#{totalPrice}, 0.00), #{remark}
+        )
+    </insert>
+
+    <!-- 입고 목록 조회 -->
+    <select id="findInboundList" parameterType="com.inventory.dto.InboundListDTO" resultType="com.inventory.dto.InboundListDTO">
+        SELECT
+            I.INBOUND_ID AS inboundId, I.INBOUND_NO AS inboundNo, I.INBOUND_TYPE AS inboundType,
+            I.INBOUND_DATE AS inboundDate, I.STATUS AS status, I.CREATED_AT AS createdAt,
+            C.CUSTOMER_NAME AS customerName, W.WAREHOUSE_NAME AS warehouseName, U.NAME AS createdUserName
+        FROM INBOUNDS I
+        LEFT JOIN CUSTOMERS C ON I.CUSTOMER_ID = C.CUSTOMER_ID
+        JOIN WAREHOUSES W ON I.WAREHOUSE_ID = W.WAREHOUSE_ID
+        JOIN USERS U ON I.CREATED_USER_ID = U.USER_ID
+        WHERE 1=1
+
+        <if test="inboundNo != null and inboundNo != ''">
+            AND I.INBOUND_NO LIKE CONCAT('%', #{inboundNo}, '%')
+        </if>
+
+        <if test="inboundType != null and inboundType != ''">
+            AND I.INBOUND_TYPE = #{inboundType}
+        </if>
+
+        <if test="status != null and status != ''">
+            AND I.STATUS = #{status}
+        </if>
+
+        <if test="customerName != null and customerName != ''">
+            AND C.CUSTOMER_NAME LIKE CONCAT('%', #{customerName}, '%')
+        </if>
+
+        <if test="warehouseName != null and warehouseName != ''">
+            AND W.WAREHOUSE_NAME LIKE CONCAT('%', #{warehouseName}, '%')
+        </if>
+
+        ORDER BY I.INBOUND_ID DESC
+    </select>
+
+    <!-- 입고 상세 기본정보 -->
+    <select id="findInboundById" parameterType="long" resultType="com.inventory.dto.InboundViewDTO">
+        SELECT
+            I.INBOUND_ID AS inboundId, I.INBOUND_NO AS inboundNo, I.INBOUND_TYPE AS inboundType,
+            I.INBOUND_DATE AS inboundDate, I.STATUS AS status, I.REMARK AS remark, I.CREATED_AT AS createdAt,
+            I.UPDATED_AT AS updatedAt, I.WAREHOUSE_ID AS warehouseId, C.CUSTOMER_NAME AS customerName,
+            W.WAREHOUSE_NAME AS warehouseName, U.NAME AS createdUserName
+        FROM INBOUNDS I
+        LEFT JOIN CUSTOMERS C ON I.CUSTOMER_ID = C.CUSTOMER_ID
+        JOIN WAREHOUSES W ON I.WAREHOUSE_ID = W.WAREHOUSE_ID
+        JOIN USERS U ON I.CREATED_USER_ID = U.USER_ID
+        WHERE I.INBOUND_ID = #{inboundId}
+    </select>
+
+    <!-- 입고 상세 품목 목록 -->
+    <select id="findInboundDetailList" parameterType="long" resultType="com.inventory.dto.InboundDetailViewDTO">
+        SELECT
+            D.INBOUND_DETAIL_ID AS inboundDetailId, D.INBOUND_ID AS inboundId, D.ITEM_ID AS itemId,
+            IT.ITEM_CODE AS itemCode, IT.ITEM_NAME AS itemName, D.QUANTITY AS quantity,
+            D.UNIT_PRICE AS unitPrice, D.TOTAL_PRICE AS totalPrice, D.REMARK AS remark
+        FROM INBOUND_DETAILS D
+        JOIN ITEMS IT ON D.ITEM_ID = IT.ITEM_ID
+        WHERE D.INBOUND_ID = #{inboundId}
+        ORDER BY D.INBOUND_DETAIL_ID ASC
+    </select>
+
+    <!-- 입고 완료 처리 -->
+    <update id="updateInboundStatusCompleted" parameterType="long">
+        UPDATE INBOUNDS
+        SET
+            STATUS = 'COMPLETED'
+        WHERE INBOUND_ID = #{inboundId} AND STATUS = 'DRAFT'
+    </update>
+
+</mapper>

@@ -5,6 +5,12 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>거래처 등록</h3>
+
+        <a href="/customers/list" class="btn btn-secondary">
+            거래처 목록
+        </a>
+        
+
     </div>
 
     <c:if test="${not empty errorMessage}">

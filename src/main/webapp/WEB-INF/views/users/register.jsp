@@ -6,6 +6,10 @@
     <!-- 제목 -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>사용자 등록</h3>
+        
+        <a href="/users/list" class="btn btn-secondary">
+            사용자 목록
+        </a>
     </div>
 
 
