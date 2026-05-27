@@ -87,7 +87,7 @@ public class InboundService {
         return inbound;
     }
 
-    // 압고완료 메서드
+    // 입고완료 메서드
     @Transactional
     public void completeInbound(Long inboundId, Long processUserId) {
 

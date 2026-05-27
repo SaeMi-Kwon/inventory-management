@@ -7,7 +7,7 @@
         <h3>입고 상세</h3>
 
         <div>
-            <c:if test="${inbound.status eq 'DRAFT'}">
+            <c:if test="${inbound.status == 'DRAFT'}">
                 <form action="/inbounds/complete/${inbound.inboundId}" method="post" style="display:inline;">
 
                     <button type="submit" class="btn btn-success" onclick="return confirm('입고완료 처리하시겠습니까? 완료 후 재고에 반영됩니다.');">
@@ -32,6 +32,7 @@
                 <tr>
                     <th style="width: 180px;">입고번호</th>
                     <td>${inbound.inboundNo}</td>
+
                     <th style="width: 180px;">입고유형</th>
                     <td>
                         <c:choose>
@@ -51,6 +52,7 @@
                             <c:otherwise>${inbound.customerName}</c:otherwise>
                         </c:choose>
                     </td>
+
                     <th>입고창고</th>
                     <td>${inbound.warehouseName}</td>
                 </tr>
@@ -58,13 +60,22 @@
                 <tr>
                     <th>입고일자</th>
                     <td>${inbound.inboundDate}</td>
+
                     <th>상태</th>
-                    <td>${inbound.status}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${inbound.status == 'DRAFT'}">임시저장</c:when>
+                            <c:when test="${inbound.status == 'COMPLETED'}">완료</c:when>
+                            <c:when test="${inbound.status == 'CANCELED'}">취소</c:when>
+                            <c:otherwise>${inbound.status}</c:otherwise>
+                        </c:choose>
+                    </td>
                 </tr>
 
                 <tr>
                     <th>등록자</th>
                     <td>${inbound.createdUserName}</td>
+                    
                     <th>등록일시</th>
                     <td>${inbound.createdAt}</td>
                 </tr>

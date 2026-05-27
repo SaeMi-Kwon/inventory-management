@@ -26,4 +26,7 @@ public interface StockMapper {
     // 재고 증가
     int increaseStock(StockDTO stockDTO);
 
+    // 재고 차감
+    int decreaseStock(StockDTO stockDTO);
+
 }

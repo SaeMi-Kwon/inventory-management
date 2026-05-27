@@ -17,8 +17,7 @@
 
             <div class="col-md-3">
                 <label class="form-label">입고번호</label>
-                <input type="text" name="inboundNo" class="form-control"
-                       value="${searchDTO.inboundNo}">
+                <input type="text" name="inboundNo" class="form-control" value="${searchDTO.inboundNo}">
             </div>
 
             <div class="col-md-3">
@@ -98,7 +97,17 @@
 
                             <td>${inbound.warehouseName}</td>
                             <td>${inbound.inboundDate}</td>
-                            <td>${inbound.status}</td>
+
+                            <td>
+                                <c:choose>
+                                    <c:when test="${inbound.status == 'DRAFT'}">임시저장</c:when>
+                                    <c:when test="${inbound.status == 'COMPLETED'}">완료</c:when>
+                                    <c:when test="${inbound.status == 'CANCELED'}">취소</c:when>
+                                    <c:otherwise>${inbound.status}</c:otherwise>
+                                </c:choose>
+                            </td>
+
+
                             <td>${inbound.createdUserName}</td>
                             <td>${inbound.createdAt}</td>
                         </tr>

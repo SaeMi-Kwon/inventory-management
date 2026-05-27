@@ -98,4 +98,12 @@
         WHERE ITEM_ID = #{itemId} AND WAREHOUSE_ID = #{warehouseId}
     </update>
 
+    <!-- 재고 차감 -->
+    <update id="decreaseStock" parameterType="com.inventory.dto.StockDTO">
+        UPDATE STOCKS
+        SET
+            QUANTITY = QUANTITY - #{quantity}
+        WHERE ITEM_ID = #{itemId} AND WAREHOUSE_ID = #{warehouseId}
+    </update>
+
 </mapper>

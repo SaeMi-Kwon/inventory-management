@@ -16,7 +16,12 @@ public enum ErrorCode {
     INVALID_INBOUND_PRICE("입고 단가는 0 이상이어야 합니다."),
     INBOUND_SAVE_FAIL("입고 등록에 실패했습니다."),
     INBOUND_ID_NOT_GENERATED("입고 ID 생성에 실패했습니다."),
-    INVALID_INBOUND_STATUS("입고 완료 처리할 수 없는 상태입니다.");
+    INVALID_INBOUND_STATUS("입고 완료 처리할 수 없는 상태입니다."),
+    INVALID_OUTBOUND_DETAIL("출고 상세 정보가 올바르지 않습니다."),
+    INVALID_OUTBOUND_QUANTITY("출고 수량은 0보다 커야 합니다."),
+    INVALID_OUTBOUND_PRICE("출고 단가는 0 이상이어야 합니다."),
+    INVALID_OUTBOUND_STATUS("출고 완료 처리할 수 없는 상태입니다."),
+    NOT_ENOUGH_STOCK("현재고가 부족합니다.");
 
 
     private final String message;
