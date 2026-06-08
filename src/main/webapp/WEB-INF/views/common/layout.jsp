@@ -53,13 +53,10 @@
                             <a href="/stocks/register" class="nav-link text-white">재고등록</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/stocks/list" class="nav-link text-white">재고현황</a>
+                            <a href="/stocks/list" class="nav-link text-white">재고목록</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/stocks/adjust" class="nav-link text-white">재고조정</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/stock-histories/list" class="nav-link text-white">재고이력조회</a>
+                            <a href="/stockHistories/list" class="nav-link text-white">재고이력조회</a>
                         </li>
                     </ul>
                 </div>

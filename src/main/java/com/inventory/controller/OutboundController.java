@@ -118,5 +118,70 @@ public class OutboundController {
         return "redirect:/outbounds/detail/" + outboundId;
     }
 
+    // 출고 수정 화면
+    @GetMapping("/edit/{outboundId}")
+    public String editForm(@PathVariable("outboundId") Long outboundId, Model model) {
 
+        OutboundViewDTO outbound = outboundService.findOutboundById(outboundId);
+
+        if (!"DRAFT".equals(outbound.getStatus())) {
+            return "redirect:/outbounds/detail/" + outboundId;
+        }
+
+        model.addAttribute("outbound", outbound);
+        model.addAttribute("customerList", customerService.findCustomerList(new CustomerDTO()));
+        model.addAttribute("warehouseList", warehouseService.findWarehouseList(new WarehouseDTO()));
+        model.addAttribute("itemList", itemService.findItemList(new ItemDTO()));
+        model.addAttribute("contentPage", "/WEB-INF/views/outbounds/edit.jsp");
+
+        return "common/layout";
+    }
+
+    // 출고 수정 처리
+    @PostMapping("/edit/{outboundId}")
+    public String edit(@PathVariable("outboundId") Long outboundId, OutboundDTO outboundDTO, Model model) {
+
+        outboundDTO.setOutboundId(outboundId);
+
+        try {
+            outboundService.updateOutbound(outboundDTO);
+
+            return "redirect:/outbounds/detail/" + outboundId;
+
+        } catch (CustomException e) {
+
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("outbound", outboundDTO);
+            model.addAttribute("customerList", customerService.findCustomerList(new CustomerDTO()));
+            model.addAttribute("warehouseList", warehouseService.findWarehouseList(new WarehouseDTO()));
+            model.addAttribute("itemList", itemService.findItemList(new ItemDTO()));
+            model.addAttribute("contentPage", "/WEB-INF/views/outbounds/edit.jsp");
+
+            return "common/layout";
+        }
+    }
+
+    // 임시저장(DRAFT) : 출고 취소 처리
+    @PostMapping("/cancel/{outboundId}")
+    public String cancel(@PathVariable("outboundId") Long outboundId) {
+
+        outboundService.cancelDraftOutbound(outboundId);
+
+        return "redirect:/outbounds/detail/" + outboundId;
+    }
+
+    // 완료(COMPLETED) : 출고 취소 처리
+    @PostMapping("/cancelCompleted/{outboundId}")
+    public String cancelCompleted(@PathVariable("outboundId") Long outboundId, HttpSession session) {
+
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
+
+        outboundService.cancelCompletedOutbound(outboundId, loginUser.getUserId());
+
+        return "redirect:/outbounds/detail/" + outboundId;
+    }
 }

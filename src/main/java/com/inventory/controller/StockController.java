@@ -1,13 +1,11 @@
 package com.inventory.controller;
 
-import com.inventory.dto.ItemDTO;
-import com.inventory.dto.StockDTO;
-import com.inventory.dto.StockListDTO;
-import com.inventory.dto.WarehouseDTO;
+import com.inventory.dto.*;
 import com.inventory.exception.CustomException;
 import com.inventory.service.ItemService;
 import com.inventory.service.StockService;
 import com.inventory.service.WarehouseService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,10 +36,16 @@ public class StockController {
 
     // 재고 등록 처리
     @PostMapping("/register")
-    public String register(StockDTO stockDTO, Model model) {
+    public String register(StockDTO stockDTO, HttpSession session, Model model) {
+
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
 
         try {
-            stockService.registerStock(stockDTO);
+            stockService.registerStock(stockDTO, loginUser.getUserId());
 
             return "redirect:/stocks/register?success=true";
 
@@ -80,10 +84,17 @@ public class StockController {
 
     // 재고 수정 처리
     @PostMapping("/edit/{stockId}")
-    public String edit(@PathVariable("stockId") Long stockId, StockDTO stockDTO) {
+    public String edit(@PathVariable("stockId") Long stockId, StockEditDTO stockDTO, HttpSession session) {
+
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
 
         stockDTO.setStockId(stockId);
-        stockService.updateStock(stockDTO);
+
+        stockService.updateStock(stockDTO, loginUser.getUserId());
 
         return "redirect:/stocks/list";
     }

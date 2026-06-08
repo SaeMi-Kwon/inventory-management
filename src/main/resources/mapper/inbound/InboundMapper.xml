@@ -69,9 +69,9 @@
     <select id="findInboundById" parameterType="long" resultType="com.inventory.dto.InboundViewDTO">
         SELECT
             I.INBOUND_ID AS inboundId, I.INBOUND_NO AS inboundNo, I.INBOUND_TYPE AS inboundType,
-            I.INBOUND_DATE AS inboundDate, I.STATUS AS status, I.REMARK AS remark, I.CREATED_AT AS createdAt,
-            I.UPDATED_AT AS updatedAt, I.WAREHOUSE_ID AS warehouseId, C.CUSTOMER_NAME AS customerName,
-            W.WAREHOUSE_NAME AS warehouseName, U.NAME AS createdUserName
+            I.CUSTOMER_ID AS customerId, I.INBOUND_DATE AS inboundDate, I.STATUS AS status, I.REMARK AS remark,
+            I.CREATED_AT AS createdAt, I.UPDATED_AT AS updatedAt, I.WAREHOUSE_ID AS warehouseId,
+            C.CUSTOMER_NAME AS customerName, W.WAREHOUSE_NAME AS warehouseName, U.NAME AS createdUserName
         FROM INBOUNDS I
         LEFT JOIN CUSTOMERS C ON I.CUSTOMER_ID = C.CUSTOMER_ID
         JOIN WAREHOUSES W ON I.WAREHOUSE_ID = W.WAREHOUSE_ID
@@ -91,12 +91,45 @@
         ORDER BY D.INBOUND_DETAIL_ID ASC
     </select>
 
-    <!-- 입고 완료 처리 -->
+    <!-- 임시저장(DRAFT) : 입고 완료 처리 -->
     <update id="updateInboundStatusCompleted" parameterType="long">
         UPDATE INBOUNDS
         SET
             STATUS = 'COMPLETED'
         WHERE INBOUND_ID = #{inboundId} AND STATUS = 'DRAFT'
+    </update>
+
+    <!-- 임시저장(DRAFT) : 출고 수정처리 -->
+    <update id="updateInbound" parameterType="com.inventory.dto.InboundDTO">
+        UPDATE INBOUNDS
+        SET
+            INBOUND_TYPE = #{inboundType},
+            CUSTOMER_ID = #{customerId},
+            WAREHOUSE_ID = #{warehouseId},
+            INBOUND_DATE = #{inboundDate},
+            REMARK = #{remark}
+        WHERE INBOUND_ID = #{inboundId} AND STATUS = 'DRAFT'
+    </update>
+
+    <!-- 임시저장(DRAFT) : 출고상세 삭제처리 -->
+    <delete id="deleteInboundDetails" parameterType="long">
+        DELETE FROM INBOUND_DETAILS WHERE INBOUND_ID = #{inboundId}
+    </delete>
+
+    <!-- 임시저장(DRAFT) : 입고취소 처리 -->
+    <update id="updateInboundStatusCanceled" parameterType="long">
+        UPDATE INBOUNDS
+        SET
+            STATUS = 'CANCELED'
+        WHERE INBOUND_ID = #{inboundId} AND STATUS = 'DRAFT'
+    </update>
+
+    <!-- 완료(COMPLETED) : 입고취소 처리 -->
+    <update id="updateCompletedInboundStatusCanceled" parameterType="long">
+        UPDATE INBOUNDS
+        SET
+            STATUS = 'CANCELED'
+        WHERE INBOUND_ID = #{inboundId} AND STATUS = 'COMPLETED'
     </update>
 
 </mapper>

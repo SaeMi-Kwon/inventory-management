@@ -66,7 +66,7 @@
     <select id="findOutboundById" parameterType="long" resultType="com.inventory.dto.OutboundViewDTO">
         SELECT
             O.OUTBOUND_ID AS outboundId, O.OUTBOUND_NO AS outboundNo, O.OUTBOUND_TYPE AS outboundType,
-            O.OUTBOUND_DATE AS outboundDate, O.STATUS AS status, O.REMARK AS remark,
+            O.CUSTOMER_ID AS customerId, O.OUTBOUND_DATE AS outboundDate, O.STATUS AS status, O.REMARK AS remark,
             O.CREATED_AT AS createdAt, O.UPDATED_AT AS updatedAt, O.WAREHOUSE_ID AS warehouseId,
             C.CUSTOMER_NAME AS customerName, W.WAREHOUSE_NAME AS warehouseName, U.NAME AS createdUserName
         FROM OUTBOUNDS O
@@ -74,7 +74,6 @@
         JOIN WAREHOUSES W ON O.WAREHOUSE_ID = W.WAREHOUSE_ID
         JOIN USERS U ON O.CREATED_USER_ID = U.USER_ID
         WHERE O.OUTBOUND_ID = #{outboundId}
-
     </select>
 
     <!-- 출고 상세 품목 목록 -->
@@ -89,12 +88,46 @@
         ORDER BY D.OUTBOUND_DETAIL_ID ASC
     </select>
 
-    <!-- 출고 완료 처리 -->
+    <!-- 임시저장(DRAFT) : 출고완료 처리 -->
     <update id="updateOutboundStatusCompleted" parameterType="long">
         UPDATE OUTBOUNDS
         SET
             STATUS = 'COMPLETED'
         WHERE OUTBOUND_ID = #{outboundId} AND STATUS = 'DRAFT'
+    </update>
+
+    <!-- 임시저장(DRAFT) : 출고수정 처리 -->
+    <update id="updateOutbound" parameterType="com.inventory.dto.OutboundDTO">
+        UPDATE OUTBOUNDS
+        SET
+            OUTBOUND_TYPE = #{outboundType},
+            CUSTOMER_ID = #{customerId},
+            WAREHOUSE_ID = #{warehouseId},
+            OUTBOUND_DATE = #{outboundDate},
+            REMARK = #{remark}
+        WHERE OUTBOUND_ID = #{outboundId} AND STATUS = 'DRAFT'
+
+    </update>
+
+    <!-- 임시저장(DRAFT) : 출고상세 삭제처리 -->
+    <delete id="deleteOutboundDetails" parameterType="long">
+        DELETE FROM OUTBOUND_DETAILS WHERE OUTBOUND_ID = #{outboundId}
+    </delete>
+
+    <!-- 임시저장(DRAFT) : 출고취소 처리 -->
+    <update id="updateOutboundStatusCanceled" parameterType="long">
+        UPDATE OUTBOUNDS
+        SET
+            STATUS = 'CANCELED'
+        WHERE OUTBOUND_ID = #{outboundId} AND STATUS = 'DRAFT'
+    </update>
+
+    <!-- 완료(COMPLETED) : 출고취소 처리 -->
+    <update id="updateCompletedOutboundStatusCanceled" parameterType="long">
+        UPDATE OUTBOUNDS
+        SET
+            STATUS = 'CANCELED'
+        WHERE OUTBOUND_ID = #{outboundId} AND STATUS = 'COMPLETED'
     </update>
 
 </mapper>

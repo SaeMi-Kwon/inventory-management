@@ -13,6 +13,7 @@ public class OutboundViewDTO {
     private Long outboundId;
     private String outboundNo;
     private String outboundType;
+    private Long customerId;
     private Long warehouseId;
     private LocalDate outboundDate;
     private String status;

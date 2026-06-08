@@ -25,6 +25,7 @@
                 <select name="inboundType" class="form-select">
                     <option value="">전체</option>
                     <option value="PURCHASE" ${searchDTO.inboundType == 'PURCHASE' ? 'selected' : ''}>구매입고</option>
+                    <option value="PRODUCTION" ${searchDTO.inboundType == 'PRODUCTION' ? 'selected' : ''}>생산입고</option>
                     <option value="INITIAL" ${searchDTO.inboundType == 'INITIAL' ? 'selected' : ''}>초기재고</option>
                     <option value="ADJUST" ${searchDTO.inboundType == 'ADJUST' ? 'selected' : ''}>조정입고</option>
                 </select>
@@ -82,6 +83,7 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${inbound.inboundType == 'PURCHASE'}">구매입고</c:when>
+                                    <c:when test="${inbound.inboundType == 'PRODUCTION'}">생산입고</c:when>
                                     <c:when test="${inbound.inboundType == 'INITIAL'}">초기재고</c:when>
                                     <c:when test="${inbound.inboundType == 'ADJUST'}">조정입고</c:when>
                                     <c:otherwise>${inbound.inboundType}</c:otherwise>

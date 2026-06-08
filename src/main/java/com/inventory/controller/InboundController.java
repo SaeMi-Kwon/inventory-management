@@ -90,6 +90,7 @@ public class InboundController {
         return "common/layout";
     }
 
+    // 입고 완료 처리
     @PostMapping("/complete/{inboundId}")
     public String complete(@PathVariable("inboundId") Long inboundId, HttpSession session) {
 
@@ -100,6 +101,73 @@ public class InboundController {
         }
 
         inboundService.completeInbound(inboundId, loginUser.getUserId());
+
+        return "redirect:/inbounds/detail/" + inboundId;
+    }
+
+    // 입고 수정 화면
+    @GetMapping("/edit/{inboundId}")
+    public String editForm(@PathVariable("inboundId") Long inboundId, Model model) {
+
+        InboundViewDTO inbound = inboundService.findInboundById(inboundId);
+
+        if (!"DRAFT".equals(inbound.getStatus())) {
+            return "redirect:/inbounds/detail/" + inboundId;
+        }
+
+        model.addAttribute("inbound", inbound);
+        model.addAttribute("customerList", customerService.findCustomerList(new CustomerDTO()));
+        model.addAttribute("warehouseList", warehouseService.findWarehouseList(new WarehouseDTO()));
+        model.addAttribute("itemList", itemService.findItemList(new ItemDTO()));
+        model.addAttribute("contentPage", "/WEB-INF/views/inbounds/edit.jsp");
+
+        return "common/layout";
+    }
+
+    // 입고 수정 처리
+    @PostMapping("/edit/{inboundId}")
+    public String edit(@PathVariable("inboundId") Long inboundId, InboundDTO inboundDTO, Model model) {
+
+        inboundDTO.setInboundId(inboundId);
+
+        try {
+            inboundService.updateInbound(inboundDTO);
+
+            return "redirect:/inbounds/detail/" + inboundId;
+
+        } catch (CustomException e) {
+
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("inbound", inboundDTO);
+            model.addAttribute("customerList", customerService.findCustomerList(new CustomerDTO()));
+            model.addAttribute("warehouseList", warehouseService.findWarehouseList(new WarehouseDTO()));
+            model.addAttribute("itemList", itemService.findItemList(new ItemDTO()));
+            model.addAttribute("contentPage", "/WEB-INF/views/inbounds/edit.jsp");
+
+            return "common/layout";
+        }
+    }
+
+    // 임시저장(DRAFT) : 입고 취소 처리
+    @PostMapping("/cancel/{inboundId}")
+    public String cancelDraft(@PathVariable("inboundId") Long inboundId) {
+
+        inboundService.cancelDraftInbound(inboundId);
+
+        return "redirect:/inbounds/detail/" + inboundId;
+    }
+
+    // 완료(COMPLETED) : 입고 취소 처리
+    @PostMapping("/cancelCompleted/{inboundId}")
+    public String cancelCompleted(@PathVariable("inboundId") Long inboundId, HttpSession session) {
+
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
+
+        inboundService.cancelCompletedInbound(inboundId, loginUser.getUserId());
 
         return "redirect:/inbounds/detail/" + inboundId;
     }

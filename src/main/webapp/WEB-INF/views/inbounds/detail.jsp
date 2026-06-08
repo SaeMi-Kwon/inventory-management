@@ -8,12 +8,29 @@
 
         <div>
             <c:if test="${inbound.status == 'DRAFT'}">
-                <form action="/inbounds/complete/${inbound.inboundId}" method="post" style="display:inline;">
 
+                <a href="/inbounds/edit/${inbound.inboundId}" class="btn btn-warning">
+                    수정
+                </a>
+
+                <form action="/inbounds/complete/${inbound.inboundId}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-success" onclick="return confirm('입고완료 처리하시겠습니까? 완료 후 재고에 반영됩니다.');">
                         입고완료
                     </button>
+                </form>
 
+                <form action="/inbounds/cancel/${inbound.inboundId}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('입고를 취소하시겠습니까?');">
+                        취소
+                    </button>
+                </form>
+            </c:if>
+
+            <c:if test="${inbound.status == 'COMPLETED'}">
+                <form action="/inbounds/cancelCompleted/${inbound.inboundId}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('완료된 입고를 취소하시겠습니까? 취소하면 재고가 다시 감소합니다.');">
+                        입고취소
+                    </button>
                 </form>
             </c:if>
 
@@ -21,6 +38,7 @@
                 목록
             </a>
         </div>
+
     </div>
 
     <div class="card mb-4">

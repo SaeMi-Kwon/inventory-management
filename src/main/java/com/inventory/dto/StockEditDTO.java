@@ -19,5 +19,7 @@ public class StockEditDTO {
     private String warehouseName;
     private Integer quantity;
     private Integer safetyStock;
+    //재고변동이력 비고
+    private String adjustRemark;
 
 }

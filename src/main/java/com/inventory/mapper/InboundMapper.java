@@ -20,4 +20,12 @@ public interface InboundMapper {
 
     int updateInboundStatusCompleted(Long inboundId);
 
+    int updateInbound(InboundDTO inboundDTO);
+
+    int deleteInboundDetails(Long inboundId);
+
+    int updateInboundStatusCanceled(Long inboundId);
+
+    int updateCompletedInboundStatusCanceled(Long inboundId);
+
 }

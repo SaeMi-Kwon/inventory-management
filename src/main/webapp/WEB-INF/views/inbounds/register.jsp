@@ -41,6 +41,7 @@
                         <label class="form-label">입고유형</label>
                         <select name="inboundType" class="form-select" required>
                             <option value="PURCHASE">구매입고</option>
+                            <option value="PRODUCTION">생산입고</option>
                             <option value="INITIAL">초기재고</option>
                             <option value="ADJUST">조정입고</option>
                         </select>

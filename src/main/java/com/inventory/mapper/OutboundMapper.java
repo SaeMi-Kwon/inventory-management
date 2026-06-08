@@ -20,4 +20,14 @@ public interface OutboundMapper {
 
     int updateOutboundStatusCompleted(Long outboundId);
 
+
+    int updateOutbound(OutboundDTO outboundDTO);
+
+    int deleteOutboundDetails(Long outboundId);
+
+    // DRAFT 상태 출고 취소
+    int updateOutboundStatusCanceled(Long outboundId);
+
+    // COMPLETED 상태 출고 취소
+    int updateCompletedOutboundStatusCanceled(Long outboundId);
 }

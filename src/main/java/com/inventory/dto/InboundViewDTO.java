@@ -13,6 +13,7 @@ public class InboundViewDTO {
     private Long inboundId;
     private String inboundNo;
     private String inboundType;
+    private Long customerId;
     private LocalDate inboundDate;
     private String status;
     private String remark;

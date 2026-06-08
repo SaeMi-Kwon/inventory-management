@@ -42,6 +42,11 @@
                         <input type="number" name="safetyStock" class="form-control" min="0" value="${stock.safetyStock}" required>
                     </div>
 
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">재고변경 사유</label>
+                        <textarea name="adjustRemark" class="form-control" rows="3" placeholder="예: 재고실사 차이, 파손, 분실, 입고 누락 등" required></textarea>
+                    </div>
+
                 </div>
 
             </div>

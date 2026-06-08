@@ -8,9 +8,29 @@
 
         <div>
             <c:if test="${outbound.status == 'DRAFT'}">
+
+                <a href="/outbounds/edit/${outbound.outboundId}" class="btn btn-warning">
+                    수정
+                </a>
+
                 <form action="/outbounds/complete/${outbound.outboundId}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-success" onclick="return confirm('출고완료 처리하시겠습니까? 완료 후 재고가 차감됩니다.');">
                         출고완료
+                    </button>
+                </form>
+
+                <form action="/outbounds/cancel/${outbound.outboundId}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('출고를 취소하시겠습니까?');">
+                        취소
+                    </button>
+                </form>
+
+            </c:if>
+
+            <c:if test="${outbound.status == 'COMPLETED'}">
+                <form action="/outbounds/cancelCompleted/${outbound.outboundId}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('완료된 출고를 취소하시겠습니까? 취소하면 재고가 다시 증가합니다.');">
+                        출고취소
                     </button>
                 </form>
             </c:if>
