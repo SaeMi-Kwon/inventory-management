@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inventory.mapper.DashboardMapper">
+
+    <select id="countTotalItems" resultType="int">
+        SELECT COUNT(*) FROM ITEMS
+    </select>
+
+    <select id="countTotalWarehouses" resultType="int">
+        SELECT COUNT(*) FROM WAREHOUSES
+    </select>
+
+    <select id="countLowStocks" resultType="int">
+        SELECT COUNT(*) FROM STOCKS WHERE QUANTITY &lt;= SAFETY_STOCK
+    </select>
+
+    <select id="countTodayInbounds" resultType="int">
+        SELECT COUNT(*) FROM INBOUNDS
+        WHERE INBOUND_DATE = CURDATE() AND STATUS = 'COMPLETED'
+    </select>
+
+    <select id="countTodayOutbounds" resultType="int">
+        SELECT COUNT(*) FROM OUTBOUNDS
+        WHERE OUTBOUND_DATE = CURDATE() AND STATUS = 'COMPLETED'
+    </select>
+
+    <select id="findRecentStockHistories" resultType="com.inventory.dto.StockHistoryListDTO">
+        SELECT
+            H.HISTORY_ID AS historyId, H.HISTORY_TYPE AS historyType, H.BEFORE_QUANTITY AS beforeQuantity,
+            H.CHANGE_QUANTITY AS changeQuantity, H.AFTER_QUANTITY AS afterQuantity, H.REMARK AS remark,
+            H.CREATED_AT AS createdAt, I.ITEM_CODE AS itemCode, I.ITEM_NAME AS itemName,
+            W.WAREHOUSE_NAME AS warehouseName, U.NAME AS processUserName
+        FROM STOCK_HISTORIES H
+        JOIN ITEMS I ON H.ITEM_ID = I.ITEM_ID
+        JOIN WAREHOUSES W ON H.WAREHOUSE_ID = W.WAREHOUSE_ID
+        JOIN USERS U ON H.PROCESS_USER_ID = U.USER_ID
+        ORDER BY H.HISTORY_ID DESC
+        LIMIT 5
+    </select>
+
+</mapper>
+

@@ -20,7 +20,7 @@ public class UserController {
 
     //사용자 등록 화면
     @GetMapping("/register")
-    public String registerForm(Model model) {
+    public String registerForm(Model model){
 
         model.addAttribute("authorityList", userService.findAuthorityList());
         model.addAttribute("contentPage", "/WEB-INF/views/users/register.jsp");
@@ -38,7 +38,7 @@ public class UserController {
             // redirect - 등록 후 새로고침했을 때 같은 데이터가 다시 등록되는 걸 막기 위해
             return "redirect:/users/register?success=true";
 
-        }catch (CustomException e){
+        }catch (CustomException e) {
             model.addAttribute("errorMessage",e.getMessage());
             model.addAttribute("authorityList", userService.findAuthorityList());
             model.addAttribute("contentPage", "/WEB-INF/views/users/register.jsp");

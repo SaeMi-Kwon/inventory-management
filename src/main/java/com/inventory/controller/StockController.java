@@ -25,7 +25,7 @@ public class StockController {
 
     // 재고 등록 화면
     @GetMapping("/register")
-    public String registerForm(Model model) {
+    public String registerForm(Model model){
 
         model.addAttribute("itemList", itemService.findItemList(new ItemDTO()));
         model.addAttribute("warehouseList", warehouseService.findWarehouseList(new WarehouseDTO()));
@@ -36,7 +36,7 @@ public class StockController {
 
     // 재고 등록 처리
     @PostMapping("/register")
-    public String register(StockDTO stockDTO, HttpSession session, Model model) {
+    public String register(StockDTO stockDTO, HttpSession session, Model model){
 
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
@@ -63,7 +63,7 @@ public class StockController {
 
     // 재고 목록 + 검색
     @GetMapping("/list")
-    public String stockList(StockListDTO searchDTO, Model model) {
+    public String stockList(StockListDTO searchDTO, Model model){
 
         model.addAttribute("stockList", stockService.findStockList(searchDTO));
         model.addAttribute("searchDTO", searchDTO);
@@ -74,7 +74,7 @@ public class StockController {
 
     // 재고 수정 화면
     @GetMapping("/edit/{stockId}")
-    public String editForm(@PathVariable("stockId") Long stockId, Model model) {
+    public String editForm(@PathVariable("stockId") Long stockId, Model model){
 
         model.addAttribute("stock", stockService.findStockById(stockId));
         model.addAttribute("contentPage", "/WEB-INF/views/stocks/edit.jsp");
@@ -84,7 +84,7 @@ public class StockController {
 
     // 재고 수정 처리
     @PostMapping("/edit/{stockId}")
-    public String edit(@PathVariable("stockId") Long stockId, StockEditDTO stockDTO, HttpSession session) {
+    public String edit(@PathVariable("stockId") Long stockId, StockEditDTO stockDTO, HttpSession session){
 
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 

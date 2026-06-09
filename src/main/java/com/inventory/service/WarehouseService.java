@@ -16,7 +16,7 @@ public class WarehouseService {
     private final WarehouseMapper warehouseMapper;
 
     // 창고 등록
-    public void registerWarehouse(WarehouseDTO warehouseDTO) {
+    public void registerWarehouse(WarehouseDTO warehouseDTO){
 
         int count = warehouseMapper.countByWarehouseCode(warehouseDTO.getWarehouseCode());
 
@@ -28,17 +28,17 @@ public class WarehouseService {
     }
 
     // 창고 목록 + 검색
-    public List<WarehouseDTO> findWarehouseList(WarehouseDTO searchDTO) {
+    public List<WarehouseDTO> findWarehouseList(WarehouseDTO searchDTO){
         return warehouseMapper.findWarehouseList(searchDTO);
     }
 
     // 창고 단건 조회
-    public WarehouseDTO findWarehouseById(Long warehouseId) {
+    public WarehouseDTO findWarehouseById(Long warehouseId){
         return warehouseMapper.findWarehouseById(warehouseId);
     }
 
     // 창고 수정
-    public void updateWarehouse(WarehouseDTO warehouseDTO) {
+    public void updateWarehouse(WarehouseDTO warehouseDTO){
         warehouseMapper.updateWarehouse(warehouseDTO);
     }
 

@@ -49,7 +49,7 @@ public class CustomerController {
 
     // 거래처 목록 + 검색
     @GetMapping("/list")
-    public String customerList(CustomerDTO searchDTO, Model model) {
+    public String customerList(CustomerDTO searchDTO, Model model){
 
         model.addAttribute("customerList", customerService.findCustomerList(searchDTO));
         model.addAttribute("searchDTO", searchDTO);
@@ -60,7 +60,7 @@ public class CustomerController {
 
     // 거래처 상세보기
     @GetMapping("/detail/{customerId}")
-    public String customerDetail(@PathVariable("customerId") Long customerId, Model model) {
+    public String customerDetail(@PathVariable("customerId") Long customerId, Model model){
 
         model.addAttribute("customer", customerService.findCustomerById(customerId));
         model.addAttribute("contentPage", "/WEB-INF/views/customers/detail.jsp");
@@ -70,7 +70,7 @@ public class CustomerController {
 
     // 거래처 수정 화면
     @GetMapping("/edit/{customerId}")
-    public String editForm(@PathVariable("customerId") Long customerId, Model model) {
+    public String editForm(@PathVariable("customerId") Long customerId, Model model){
 
         model.addAttribute("customer", customerService.findCustomerById(customerId));
         model.addAttribute("contentPage", "/WEB-INF/views/customers/edit.jsp");
@@ -80,7 +80,7 @@ public class CustomerController {
 
     // 거래처 수정 처리
     @PostMapping("/edit/{customerId}")
-    public String edit(@PathVariable("customerId") Long customerId, CustomerDTO customerDTO) {
+    public String edit(@PathVariable("customerId") Long customerId, CustomerDTO customerDTO){
 
         customerDTO.setCustomerId(customerId);
         customerService.updateCustomer(customerDTO);

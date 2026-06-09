@@ -37,7 +37,7 @@ public class InboundController {
 
     // 입고 등록 처리
     @PostMapping("register")
-    public String register(InboundDTO inboundDTO, HttpSession session,Model model) {
+    public String register(InboundDTO inboundDTO, HttpSession session,Model model){
 
         // 로그인 사용자 조회
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
@@ -70,7 +70,7 @@ public class InboundController {
 
     // 입고 목록
     @GetMapping("/list")
-    public String list(InboundListDTO searchDTO, Model model) {
+    public String list(InboundListDTO searchDTO, Model model){
 
         model.addAttribute("inboundList", inboundService.findInboundList(searchDTO));
         model.addAttribute("searchDTO", searchDTO);
@@ -81,7 +81,7 @@ public class InboundController {
 
     // 입고 상세
     @GetMapping("/detail/{inboundId}")
-    public String detail(@PathVariable("inboundId") Long inboundId, Model model) {
+    public String detail(@PathVariable("inboundId") Long inboundId, Model model){
 
         InboundViewDTO inbound = inboundService.findInboundById(inboundId);
         model.addAttribute("inbound", inbound);
@@ -92,7 +92,7 @@ public class InboundController {
 
     // 입고 완료 처리
     @PostMapping("/complete/{inboundId}")
-    public String complete(@PathVariable("inboundId") Long inboundId, HttpSession session) {
+    public String complete(@PathVariable("inboundId") Long inboundId, HttpSession session){
 
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
@@ -107,7 +107,7 @@ public class InboundController {
 
     // 입고 수정 화면
     @GetMapping("/edit/{inboundId}")
-    public String editForm(@PathVariable("inboundId") Long inboundId, Model model) {
+    public String editForm(@PathVariable("inboundId") Long inboundId, Model model){
 
         InboundViewDTO inbound = inboundService.findInboundById(inboundId);
 
@@ -126,7 +126,7 @@ public class InboundController {
 
     // 입고 수정 처리
     @PostMapping("/edit/{inboundId}")
-    public String edit(@PathVariable("inboundId") Long inboundId, InboundDTO inboundDTO, Model model) {
+    public String edit(@PathVariable("inboundId") Long inboundId, InboundDTO inboundDTO, Model model){
 
         inboundDTO.setInboundId(inboundId);
 
@@ -150,7 +150,7 @@ public class InboundController {
 
     // 임시저장(DRAFT) : 입고 취소 처리
     @PostMapping("/cancel/{inboundId}")
-    public String cancelDraft(@PathVariable("inboundId") Long inboundId) {
+    public String cancelDraft(@PathVariable("inboundId") Long inboundId){
 
         inboundService.cancelDraftInbound(inboundId);
 
@@ -159,7 +159,7 @@ public class InboundController {
 
     // 완료(COMPLETED) : 입고 취소 처리
     @PostMapping("/cancelCompleted/{inboundId}")
-    public String cancelCompleted(@PathVariable("inboundId") Long inboundId, HttpSession session) {
+    public String cancelCompleted(@PathVariable("inboundId") Long inboundId, HttpSession session){
 
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 

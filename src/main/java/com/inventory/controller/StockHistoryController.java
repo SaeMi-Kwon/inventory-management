@@ -17,7 +17,7 @@ public class StockHistoryController {
 
     // 재고이력 목록 조회
     @GetMapping("/list")
-    public String list(StockHistoryListDTO searchDTO, Model model) {
+    public String list(StockHistoryListDTO searchDTO, Model model){
 
         model.addAttribute("historyList", stockHistoryService.findStockHistoryList(searchDTO));
         model.addAttribute("searchDTO", searchDTO);

@@ -36,7 +36,7 @@ public class ItemController {
 
             return "redirect:/items/register?success=true";
 
-        }catch (CustomException e){
+        }catch (CustomException e) {
 
             model.addAttribute("errorMessage",e.getMessage());
             model.addAttribute("item",itemDTO);
@@ -49,7 +49,7 @@ public class ItemController {
 
     // 품목 목록 + 검색
     @GetMapping("/list")
-    public String itemList(ItemDTO searchDTO, Model model) {
+    public String itemList(ItemDTO searchDTO, Model model){
 
         model.addAttribute("itemList", itemService.findItemList(searchDTO));
         model.addAttribute("searchDTO", searchDTO);
@@ -60,7 +60,7 @@ public class ItemController {
 
     // 품목 상세보기
     @GetMapping("/detail/{itemId}")
-    public String itemDetail(@PathVariable("itemId") Long itemId, Model model) {
+    public String itemDetail(@PathVariable("itemId") Long itemId, Model model){
 
         model.addAttribute("item", itemService.findItemById(itemId));
         model.addAttribute("contentPage", "/WEB-INF/views/items/detail.jsp");
@@ -70,7 +70,7 @@ public class ItemController {
 
     // 품목 수정 화면
     @GetMapping("/edit/{itemId}")
-    public String editForm(@PathVariable("itemId") Long itemId, Model model) {
+    public String editForm(@PathVariable("itemId") Long itemId, Model model){
 
         model.addAttribute("item", itemService.findItemById(itemId));
         model.addAttribute("contentPage", "/WEB-INF/views/items/edit.jsp");
@@ -80,7 +80,7 @@ public class ItemController {
 
     // 품목 수정 처리
     @PostMapping("/edit/{itemId}")
-    public String edit(@PathVariable("itemId") Long itemId, ItemDTO itemDTO) {
+    public String edit(@PathVariable("itemId") Long itemId, ItemDTO itemDTO){
 
         itemDTO.setItemId(itemId);
         itemService.updateItem(itemDTO);

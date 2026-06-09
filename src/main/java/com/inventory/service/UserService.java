@@ -20,12 +20,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     //권한리스트
-    public List<CustomerDTO> findAuthorityList() {
+    public List<CustomerDTO> findAuthorityList(){
         return userMapper.findAuthorityList();
     }
 
     //사용자등록
-    public void registerUser(UserDTO userDTO) {
+    public void registerUser(UserDTO userDTO){
 
         int count = userMapper.countByEmployeeId(userDTO.getEmployeeId());
 
@@ -40,22 +40,22 @@ public class UserService {
     }
 
     //사용자 목록 + 검색
-    public List<UserDTO> findUserList(UserDTO searchDTO) {
+    public List<UserDTO> findUserList(UserDTO searchDTO){
         return userMapper.findUserList(searchDTO);
     }
 
     //사용자 상세
-    public UserDTO findUserById(Long userId) {
+    public UserDTO findUserById(Long userId){
         return userMapper.findUserById(userId);
     }
 
     //사용자 수정
-    public void updateUser(UserDTO userDTO) {
+    public void updateUser(UserDTO userDTO){
         userMapper.updateUser(userDTO);
     }
 
     //사용자 비번초기화
-    public void resetPassword(Long userId) {
+    public void resetPassword(Long userId){
         UserDTO userDTO = new UserDTO();
 
         userDTO.setUserId(userId);
@@ -65,7 +65,7 @@ public class UserService {
     }
 
     // 로그인
-    public UserDTO login(LoginDTO loginDTO) {
+    public UserDTO login(LoginDTO loginDTO){
 
         UserDTO user = userMapper.findUserByEmployeeId(loginDTO.getEmployeeId());
 

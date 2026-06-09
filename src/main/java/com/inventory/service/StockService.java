@@ -23,7 +23,7 @@ public class StockService {
 
     // 재고 등록
     @Transactional
-    public void registerStock(StockDTO stockDTO, Long processUserId) {
+    public void registerStock(StockDTO stockDTO, Long processUserId){
 
         // 중복 체크
         if (stockMapper.countByItemAndWarehouse(stockDTO) > 0) {
@@ -50,18 +50,18 @@ public class StockService {
     }
 
     // 재고 목록 + 검색
-    public List<StockListDTO> findStockList(StockListDTO searchDTO) {
+    public List<StockListDTO> findStockList(StockListDTO searchDTO){
         return stockMapper.findStockList(searchDTO);
     }
 
     // 재고 단건 조회
-    public StockEditDTO findStockById(Long stockId) {
+    public StockEditDTO findStockById(Long stockId){
         return stockMapper.findStockById(stockId);
     }
 
     // 재고 수정
     @Transactional
-    public void updateStock(StockEditDTO stockDTO, Long processUserId) {
+    public void updateStock(StockEditDTO stockDTO, Long processUserId){
 
         StockEditDTO currentStock = stockMapper.findStockById(stockDTO.getStockId());
 

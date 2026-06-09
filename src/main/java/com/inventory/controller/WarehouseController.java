@@ -19,7 +19,7 @@ public class WarehouseController {
 
     // 창고 등록 화면
     @GetMapping("/register")
-    public String registerForm(Model model) {
+    public String registerForm(Model model){
 
         model.addAttribute("contentPage", "/WEB-INF/views/warehouses/register.jsp");
 
@@ -28,7 +28,7 @@ public class WarehouseController {
 
     // 창고 등록 처리
     @PostMapping("/register")
-    public String register(WarehouseDTO warehouseDTO, Model model) {
+    public String register(WarehouseDTO warehouseDTO, Model model){
 
         try {
             warehouseService.registerWarehouse(warehouseDTO);
@@ -47,7 +47,7 @@ public class WarehouseController {
 
     // 창고 목록 + 검색
     @GetMapping("/list")
-    public String warehouseList(WarehouseDTO searchDTO, Model model) {
+    public String warehouseList(WarehouseDTO searchDTO, Model model){
 
         model.addAttribute("warehouseList", warehouseService.findWarehouseList(searchDTO));
         model.addAttribute("searchDTO", searchDTO);

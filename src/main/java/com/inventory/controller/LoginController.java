@@ -17,12 +17,12 @@ public class LoginController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(){
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(LoginDTO loginDTO, HttpSession session, Model model) {
+    public String login(LoginDTO loginDTO, HttpSession session, Model model){
 
         try {
             UserDTO loginUser = userService.login(loginDTO);
@@ -37,7 +37,7 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session){
 
         session.invalidate();
 

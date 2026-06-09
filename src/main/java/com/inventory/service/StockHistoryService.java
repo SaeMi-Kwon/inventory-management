@@ -14,7 +14,7 @@ public class StockHistoryService {
     private final StockHistoryMapper stockHistoryMapper;
 
     // 재고이력 목록 조회
-    public List<StockHistoryListDTO> findStockHistoryList(StockHistoryListDTO searchDTO) {
+    public List<StockHistoryListDTO> findStockHistoryList(StockHistoryListDTO searchDTO){
         return stockHistoryMapper.findStockHistoryList(searchDTO);
     }
 

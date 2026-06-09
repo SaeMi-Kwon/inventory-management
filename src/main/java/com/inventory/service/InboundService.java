@@ -71,13 +71,13 @@ public class InboundService {
 
 
     // 입고 목록 조회
-    public List<InboundListDTO> findInboundList(InboundListDTO searchDTO) {
+    public List<InboundListDTO> findInboundList(InboundListDTO searchDTO){
         return inboundMapper.findInboundList(searchDTO);
     }
 
 
     // 입고 상세 조회
-    public InboundViewDTO findInboundById(Long inboundId) {
+    public InboundViewDTO findInboundById(Long inboundId){
 
         InboundViewDTO inbound = inboundMapper.findInboundById(inboundId);
         List<InboundDetailViewDTO> detailList = inboundMapper.findInboundDetailList(inboundId);
@@ -89,7 +89,7 @@ public class InboundService {
 
     // 입고완료 메서드
     @Transactional
-    public void completeInbound(Long inboundId, Long processUserId) {
+    public void completeInbound(Long inboundId, Long processUserId){
 
         InboundViewDTO inbound = inboundMapper.findInboundById(inboundId);
 
@@ -166,7 +166,7 @@ public class InboundService {
 
     // 임시저장(DRAFT) 입고 수정처리
     @Transactional
-    public void updateInbound(InboundDTO inboundDTO) {
+    public void updateInbound(InboundDTO inboundDTO){
 
         InboundViewDTO inbound = inboundMapper.findInboundById(inboundDTO.getInboundId());
 
@@ -220,7 +220,7 @@ public class InboundService {
 
     // 임시저장(DRAFT) 입고 취소처리
     @Transactional
-    public void cancelDraftInbound(Long inboundId) {
+    public void cancelDraftInbound(Long inboundId){
 
         // 단건 입고 정보 조회
         InboundViewDTO inbound = inboundMapper.findInboundById(inboundId);
@@ -240,7 +240,7 @@ public class InboundService {
 
     // 완료(COMPLETED) 입고 취소처리
     @Transactional
-    public void cancelCompletedInbound(Long inboundId, Long processUserId) {
+    public void cancelCompletedInbound(Long inboundId, Long processUserId){
 
         // 단건 입고 정보 조회
         InboundViewDTO inbound = inboundMapper.findInboundById(inboundId);

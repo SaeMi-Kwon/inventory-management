@@ -27,7 +27,7 @@ public class CustomerService {
     }
 
     // 거래처 목록 + 검색
-    public List<CustomerDTO> findCustomerList(CustomerDTO searchDTO) {
+    public List<CustomerDTO> findCustomerList(CustomerDTO searchDTO){
         return customerMapper.findCustomerList(searchDTO);
     }
 
@@ -37,7 +37,7 @@ public class CustomerService {
     }
 
     // 거래처 수정
-    public void updateCustomer(CustomerDTO customerDTO) {
+    public void updateCustomer(CustomerDTO customerDTO){
         customerMapper.updateCustomer(customerDTO);
     }
 

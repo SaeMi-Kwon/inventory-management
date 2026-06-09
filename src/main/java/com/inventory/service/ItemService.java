@@ -16,7 +16,7 @@ public class ItemService {
     private final ItemMapper itemMapper;
 
     // 품목 등록
-    public void register(ItemDTO itemDTO) {
+    public void register(ItemDTO itemDTO){
 
         int count = itemMapper.countByItemCode(itemDTO.getItemCode());
 
@@ -28,17 +28,17 @@ public class ItemService {
     }
 
     // 품목 목록 + 검색
-    public List<ItemDTO> findItemList(ItemDTO searchDTO) {
+    public List<ItemDTO> findItemList(ItemDTO searchDTO){
         return itemMapper.findItemList(searchDTO);
     }
 
     // 품목 상세정보
-    public ItemDTO findItemById(Long itemId) {
+    public ItemDTO findItemById(Long itemId){
         return itemMapper.findItemById(itemId);
     }
 
     // 품목 수정
-    public void updateItem(ItemDTO itemDTO) {
+    public void updateItem(ItemDTO itemDTO){
         itemMapper.updateItem(itemDTO);
     }
 

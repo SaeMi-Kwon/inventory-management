@@ -22,7 +22,7 @@
 
             <!-- 대시보드 -->
             <li class="nav-item">
-                <a href="/" class="nav-link text-white">대시보드</a>
+                <a href="/dashboard" class="nav-link text-white">대시보드</a>
             </li>
 
             <!-- 품목관리 -->

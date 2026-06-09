@@ -58,18 +58,18 @@ public class OutboundController {
 
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
-        if(loginUser == null){
+        if(loginUser == null) {
             return "redirect:/login";
         }
 
         outboundDTO.setCreatedUserId(loginUser.getUserId());
 
-        try{
+        try {
             outboundService.registerOutbound(outboundDTO);
 
             return "redirect:/outbounds/register?success=true";
 
-        } catch (CustomException e){
+        } catch (CustomException e) {
 
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("outbound", outboundDTO);
@@ -84,7 +84,7 @@ public class OutboundController {
 
     // 출고 목록
     @GetMapping("/list")
-    public String list(OutboundListDTO searchDTO, Model model) {
+    public String list(OutboundListDTO searchDTO, Model model){
 
         model.addAttribute("outboundList", outboundService.findOutboundList(searchDTO));
         model.addAttribute("searchDTO", searchDTO);
@@ -95,7 +95,7 @@ public class OutboundController {
 
     // 출고 상세
     @GetMapping("/detail/{outboundId}")
-    public String detail(@PathVariable("outboundId") Long outboundId, Model model) {
+    public String detail(@PathVariable("outboundId") Long outboundId, Model model){
 
         model.addAttribute("outbound", outboundService.findOutboundById(outboundId));
         model.addAttribute("contentPage", "/WEB-INF/views/outbounds/detail.jsp");
@@ -105,7 +105,7 @@ public class OutboundController {
 
     // 출고 완료 처리
     @PostMapping("/complete/{outboundId}")
-    public String complete(@PathVariable("outboundId") Long outboundId, HttpSession session) {
+    public String complete(@PathVariable("outboundId") Long outboundId, HttpSession session){
 
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
@@ -120,7 +120,7 @@ public class OutboundController {
 
     // 출고 수정 화면
     @GetMapping("/edit/{outboundId}")
-    public String editForm(@PathVariable("outboundId") Long outboundId, Model model) {
+    public String editForm(@PathVariable("outboundId") Long outboundId, Model model){
 
         OutboundViewDTO outbound = outboundService.findOutboundById(outboundId);
 
@@ -139,7 +139,7 @@ public class OutboundController {
 
     // 출고 수정 처리
     @PostMapping("/edit/{outboundId}")
-    public String edit(@PathVariable("outboundId") Long outboundId, OutboundDTO outboundDTO, Model model) {
+    public String edit(@PathVariable("outboundId") Long outboundId, OutboundDTO outboundDTO, Model model){
 
         outboundDTO.setOutboundId(outboundId);
 
@@ -163,7 +163,7 @@ public class OutboundController {
 
     // 임시저장(DRAFT) : 출고 취소 처리
     @PostMapping("/cancel/{outboundId}")
-    public String cancel(@PathVariable("outboundId") Long outboundId) {
+    public String cancel(@PathVariable("outboundId") Long outboundId){
 
         outboundService.cancelDraftOutbound(outboundId);
 
@@ -172,7 +172,7 @@ public class OutboundController {
 
     // 완료(COMPLETED) : 출고 취소 처리
     @PostMapping("/cancelCompleted/{outboundId}")
-    public String cancelCompleted(@PathVariable("outboundId") Long outboundId, HttpSession session) {
+    public String cancelCompleted(@PathVariable("outboundId") Long outboundId, HttpSession session){
 
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
