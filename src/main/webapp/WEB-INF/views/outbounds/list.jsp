@@ -108,7 +108,7 @@
 
 
                         <td>${outbound.createdUserName}</td>
-                        <td>${outbound.createdAt}</td>
+                        <td>${outbound.createdAtText}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

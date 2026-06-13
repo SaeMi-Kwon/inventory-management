@@ -27,6 +27,17 @@
         SELECT COUNT(*) FROM OUTBOUNDS
         WHERE OUTBOUND_DATE = CURDATE() AND STATUS = 'COMPLETED'
     </select>
+    
+    <select id="sumThisMonthSalesAmount" resultType="java.math.BigDecimal">
+        SELECT
+            IFNULL(SUM(OD.TOTAL_PRICE), 0)
+        FROM OUTBOUNDS O
+        JOIN OUTBOUND_DETAILS OD ON O.OUTBOUND_ID = OD.OUTBOUND_ID
+        WHERE O.STATUS = 'COMPLETED'
+            AND O.OUTBOUND_TYPE = 'SALE'
+            AND YEAR(O.OUTBOUND_DATE) = YEAR(CURDATE())
+            AND MONTH(O.OUTBOUND_DATE) = MONTH(CURDATE())
+    </select>
 
     <select id="findRecentStockHistories" resultType="com.inventory.dto.StockHistoryListDTO">
         SELECT
@@ -42,5 +53,115 @@
         LIMIT 5
     </select>
 
-</mapper>
+    <select id="findLowStockTop5" resultType="com.inventory.dto.DashboardStockTopDTO">
+        SELECT
+            S.STOCK_ID AS stockId, I.ITEM_CODE AS itemCode, I.ITEM_NAME AS itemName,
+            W.WAREHOUSE_NAME AS warehouseName, S.QUANTITY AS quantity, S.SAFETY_STOCK AS safetyStock
+        FROM STOCKS S
+        JOIN ITEMS I ON S.ITEM_ID = I.ITEM_ID
+        JOIN WAREHOUSES W ON S.WAREHOUSE_ID = W.WAREHOUSE_ID
+        WHERE S.QUANTITY &lt;= S.SAFETY_STOCK
+        ORDER BY (S.QUANTITY - S.SAFETY_STOCK) ASC
+        LIMIT 5
+    </select>
 
+    <select id="findStockQuantityTop5" resultType="com.inventory.dto.DashboardStockTopDTO">
+        SELECT
+            S.STOCK_ID AS stockId, I.ITEM_CODE AS itemCode, I.ITEM_NAME AS itemName,
+            W.WAREHOUSE_NAME AS warehouseName, S.QUANTITY AS quantity, S.SAFETY_STOCK AS safetyStock
+        FROM STOCKS S
+        JOIN ITEMS I ON S.ITEM_ID = I.ITEM_ID
+        JOIN WAREHOUSES W ON S.WAREHOUSE_ID = W.WAREHOUSE_ID
+        ORDER BY S.QUANTITY DESC
+        LIMIT 5
+    </select>
+    
+    <select id="findSalesTop5" resultType="com.inventory.dto.DashboardSalesTopDTO">
+        SELECT
+            I.ITEM_CODE AS itemCode,
+            I.ITEM_NAME AS itemName,
+            SUM(OD.QUANTITY) AS salesQuantity,
+            SUM(OD.TOTAL_PRICE) AS salesAmount
+        FROM OUTBOUNDS O
+        JOIN OUTBOUND_DETAILS OD ON O.OUTBOUND_ID = OD.OUTBOUND_ID
+        JOIN ITEMS I ON OD.ITEM_ID = I.ITEM_ID
+        WHERE O.STATUS = 'COMPLETED'
+            AND O.OUTBOUND_TYPE = 'SALE'
+            AND YEAR(O.OUTBOUND_DATE) = YEAR(CURDATE())
+            AND MONTH(O.OUTBOUND_DATE) = MONTH(CURDATE())
+        GROUP BY I.ITEM_ID, I.ITEM_CODE, I.ITEM_NAME
+        ORDER BY salesAmount DESC
+        LIMIT 5
+    </select>
+
+    <select id="findMonthlyInboundOutboundCounts" resultType="com.inventory.dto.DashboardChartDTO">
+        SELECT
+            D.BASE_MONTH AS label,
+            IFNULL(I.INBOUND_COUNT, 0) AS inboundCount,
+            IFNULL(O.OUTBOUND_COUNT, 0) AS outboundCount
+        FROM (
+            SELECT CONCAT(YEAR(CURDATE()), '-01') AS BASE_MONTH
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-02')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-03')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-04')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-05')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-06')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-07')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-08')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-09')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-10')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-11')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-12')
+        ) D
+        LEFT JOIN (
+            SELECT
+                DATE_FORMAT(INBOUND_DATE, '%Y-%m') AS YM,
+                COUNT(*) AS INBOUND_COUNT
+            FROM INBOUNDS
+            WHERE STATUS = 'COMPLETED' AND YEAR(INBOUND_DATE) = YEAR(CURDATE())
+            GROUP BY DATE_FORMAT(INBOUND_DATE, '%Y-%m')
+        ) I ON D.BASE_MONTH = I.YM
+        LEFT JOIN (
+            SELECT
+                DATE_FORMAT(OUTBOUND_DATE, '%Y-%m') AS YM,
+                COUNT(*) AS OUTBOUND_COUNT
+            FROM OUTBOUNDS
+            WHERE STATUS = 'COMPLETED' AND YEAR(OUTBOUND_DATE) = YEAR(CURDATE())
+            GROUP BY DATE_FORMAT(OUTBOUND_DATE, '%Y-%m')
+        ) O ON D.BASE_MONTH = O.YM
+        ORDER BY D.BASE_MONTH
+    </select>
+
+    <select id="findMonthlySalesAmount" resultType="com.inventory.dto.DashboardChartDTO">
+        SELECT
+            D.BASE_MONTH AS label,
+            IFNULL(S.SALES_AMOUNT, 0) AS salesAmount
+        FROM (
+            SELECT CONCAT(YEAR(CURDATE()), '-01') AS BASE_MONTH
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-02')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-03')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-04')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-05')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-06')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-07')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-08')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-09')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-10')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-11')
+            UNION ALL SELECT CONCAT(YEAR(CURDATE()), '-12')
+        ) D
+        LEFT JOIN (
+            SELECT
+                DATE_FORMAT(O.OUTBOUND_DATE, '%Y-%m') AS YM,
+                SUM(OD.TOTAL_PRICE) AS SALES_AMOUNT
+            FROM OUTBOUNDS O
+            JOIN OUTBOUND_DETAILS OD ON O.OUTBOUND_ID = OD.OUTBOUND_ID
+            WHERE O.STATUS = 'COMPLETED'
+                AND O.OUTBOUND_TYPE = 'SALE'
+                AND YEAR(O.OUTBOUND_DATE) = YEAR(CURDATE())
+            GROUP BY DATE_FORMAT(O.OUTBOUND_DATE, '%Y-%m')
+        ) S ON D.BASE_MONTH = S.YM
+        ORDER BY D.BASE_MONTH
+    </select>
+
+</mapper>

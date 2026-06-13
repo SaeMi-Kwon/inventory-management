@@ -127,7 +127,7 @@
                                 </c:choose>
                             </td>
 
-                            <td>${customer.createdAt}</td>
+                            <td>${customer.createdAtText}</td>
 
                         </tr>
 

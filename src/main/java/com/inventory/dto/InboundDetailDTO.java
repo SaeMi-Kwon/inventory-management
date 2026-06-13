@@ -20,4 +20,5 @@ public class InboundDetailDTO {
     private String itemCode;
     private String itemName;
 
+
 }

@@ -170,7 +170,7 @@
                                 </c:choose>
                             </td>
 
-                            <td>${item.createdAt}</td>
+                            <td>${item.createdAtText}</td>
 
                         </tr>
 

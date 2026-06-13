@@ -80,7 +80,7 @@
     <select id="findOutboundDetailList" parameterType="long" resultType="com.inventory.dto.OutboundDetailViewDTO">
         SELECT
             D.OUTBOUND_DETAIL_ID AS outboundDetailId, D.OUTBOUND_ID AS outboundId, D.ITEM_ID AS itemId,
-            I.ITEM_CODE AS itemCode, I.ITEM_NAME AS itemName, D.QUANTITY AS quantity,
+            I.ITEM_CODE AS itemCode, I.ITEM_NAME AS itemName, I.SPEC AS spec, I.UNIT AS unit, D.QUANTITY AS quantity,
             D.UNIT_PRICE AS unitPrice, D.TOTAL_PRICE AS totalPrice, D.REMARK AS remark
         FROM OUTBOUND_DETAILS D
         JOIN ITEMS I ON D.ITEM_ID = I.ITEM_ID

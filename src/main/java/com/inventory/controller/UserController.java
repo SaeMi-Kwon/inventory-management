@@ -1,5 +1,6 @@
 package com.inventory.controller;
 
+import com.inventory.dto.PasswordResetDTO;
 import com.inventory.dto.UserDTO;
 import com.inventory.exception.CustomException;
 import com.inventory.service.UserService;
@@ -102,5 +103,33 @@ public class UserController {
         return "redirect:/users/detail/" + userId;
     }
 
+
+    // 비밀번호 재설정 화면
+    @GetMapping("/password/reset")
+    public String passwordResetForm(Model model) {
+
+        model.addAttribute("passwordResetDTO", new PasswordResetDTO());
+        model.addAttribute("contentPage", "/WEB-INF/views/users/passwordReset.jsp");
+
+        return "users/passwordReset";
+    }
+
+    // 비밀번호 재설정 처리
+    @PostMapping("/password/reset")
+    public String resetUserPassword(PasswordResetDTO passwordResetDTO, Model model) {
+
+        try {
+            userService.resetByUserPassword(passwordResetDTO);
+
+            return "redirect:/login?reset=true";
+
+        } catch (CustomException e) {
+
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("passwordResetDTO", passwordResetDTO);
+
+            return "users/passwordReset";
+        }
+    }
 
 }

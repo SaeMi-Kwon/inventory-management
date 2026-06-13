@@ -20,7 +20,19 @@ public class DashboardService {
         dashboardDTO.setLowStockCount(dashboardMapper.countLowStocks());
         dashboardDTO.setTodayInboundCount(dashboardMapper.countTodayInbounds());
         dashboardDTO.setTodayOutboundCount(dashboardMapper.countTodayOutbounds());
+        dashboardDTO.setThisMonthSalesAmount(dashboardMapper.sumThisMonthSalesAmount());
+
         dashboardDTO.setRecentHistoryList(dashboardMapper.findRecentStockHistories());
+
+        dashboardDTO.setLowStockTopList(dashboardMapper.findLowStockTop5());
+        dashboardDTO.setStockQuantityTopList(dashboardMapper.findStockQuantityTop5());
+        dashboardDTO.setSalesTopList(dashboardMapper.findSalesTop5());
+
+        dashboardDTO.setMonthlyInOutList(dashboardMapper.findMonthlyInboundOutboundCounts());
+        dashboardDTO.setMonthlySalesList(dashboardMapper.findMonthlySalesAmount());
+
+
+
 
         return dashboardDTO;
     }

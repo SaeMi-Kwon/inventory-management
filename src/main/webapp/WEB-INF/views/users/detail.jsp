@@ -82,11 +82,11 @@
                 </tr>
                 <tr>
                     <th>등록일시</th>
-                    <td>${user.createdAt}</td>
+                    <td>${user.createdAtText}</td>
                 </tr>
                 <tr>
                     <th>수정일시</th>
-                    <td>${user.updatedAt}</td>
+                    <td>${user.updatedAtText}</td>
                 </tr>
             </table>
 

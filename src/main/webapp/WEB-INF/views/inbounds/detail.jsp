@@ -7,31 +7,33 @@
         <h3>입고 상세</h3>
 
         <div>
-            <c:if test="${inbound.status == 'DRAFT'}">
+            <c:if test="${sessionScope.loginUser.authCode == 'MANAGER'}">
+                <c:if test="${inbound.status == 'DRAFT'}">
 
-                <a href="/inbounds/edit/${inbound.inboundId}" class="btn btn-warning">
-                    수정
-                </a>
+                    <a href="/inbounds/edit/${inbound.inboundId}" class="btn btn-warning">
+                        수정
+                    </a>
 
-                <form action="/inbounds/complete/${inbound.inboundId}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-success" onclick="return confirm('입고완료 처리하시겠습니까? 완료 후 재고에 반영됩니다.');">
-                        입고완료
-                    </button>
-                </form>
+                    <form action="/inbounds/complete/${inbound.inboundId}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-success" onclick="return confirm('입고완료 처리하시겠습니까? 완료 후 재고에 반영됩니다.');">
+                            입고완료
+                        </button>
+                    </form>
 
-                <form action="/inbounds/cancel/${inbound.inboundId}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('입고를 취소하시겠습니까?');">
-                        취소
-                    </button>
-                </form>
-            </c:if>
+                    <form action="/inbounds/cancel/${inbound.inboundId}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('입고를 취소하시겠습니까?');">
+                            취소
+                        </button>
+                    </form>
+                </c:if>
 
-            <c:if test="${inbound.status == 'COMPLETED'}">
-                <form action="/inbounds/cancelCompleted/${inbound.inboundId}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('완료된 입고를 취소하시겠습니까? 취소하면 재고가 다시 감소합니다.');">
-                        입고취소
-                    </button>
-                </form>
+                <c:if test="${inbound.status == 'COMPLETED'}">
+                    <form action="/inbounds/cancelCompleted/${inbound.inboundId}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('완료된 입고를 취소하시겠습니까? 취소하면 재고가 다시 감소합니다.');">
+                            입고취소
+                        </button>
+                    </form>
+                </c:if>
             </c:if>
 
             <a href="/inbounds/list" class="btn btn-secondary">
@@ -95,7 +97,7 @@
                     <td>${inbound.createdUserName}</td>
                     
                     <th>등록일시</th>
-                    <td>${inbound.createdAt}</td>
+                    <td>${inbound.createdAtText}</td>
                 </tr>
 
                 <tr>
@@ -117,6 +119,8 @@
                     <tr>
                         <th>품목코드</th>
                         <th>품목명</th>
+                        <th>규격</th>
+                        <th>단위</th>
                         <th>수량</th>
                         <th>입고단가</th>
                         <th>입고금액</th>
@@ -135,6 +139,8 @@
                         <tr>
                             <td>${detail.itemCode}</td>
                             <td>${detail.itemName}</td>
+                            <td>${detail.spec}</td>
+                            <td>${detail.unit}</td>
                             <td>${detail.quantity}</td>
                             <td>${detail.unitPrice}</td>
                             <td>${detail.totalPrice}</td>

@@ -13,6 +13,8 @@ public class InboundDetailViewDTO {
     private Long itemId;
     private String itemCode;
     private String itemName;
+    private String spec;
+    private String unit;
     private Integer quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;

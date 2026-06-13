@@ -1,5 +1,6 @@
 package com.inventory.dto;
 
+import com.inventory.util.DateFormatUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,5 +28,13 @@ public class ItemDTO {
     private String remark;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public String getCreatedAtText() {
+        return DateFormatUtil.format(createdAt);
+    }
+
+    public String getUpdatedAtText() {
+        return DateFormatUtil.format(updatedAt);
+    }
 
 }

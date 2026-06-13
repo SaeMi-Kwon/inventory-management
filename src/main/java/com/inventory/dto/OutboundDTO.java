@@ -1,5 +1,6 @@
 package com.inventory.dto;
 
+import com.inventory.util.DateFormatUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,5 +24,13 @@ public class OutboundDTO {
     private LocalDateTime updatedAt;
 
     private List<OutboundDetailDTO> detailList;
+
+    public String getCreatedAtText() {
+        return DateFormatUtil.format(createdAt);
+    }
+
+    public String getUpdatedAtText() {
+        return DateFormatUtil.format(updatedAt);
+    }
 
 }

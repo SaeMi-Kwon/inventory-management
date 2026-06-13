@@ -1,5 +1,6 @@
 package com.inventory.dto;
 
+import com.inventory.util.DateFormatUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,4 +20,7 @@ public class OutboundListDTO {
     private String warehouseName;
     private String createdUserName;
 
+    public String getCreatedAtText() {
+        return DateFormatUtil.format(createdAt);
+    }
 }

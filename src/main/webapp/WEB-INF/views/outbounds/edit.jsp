@@ -93,14 +93,17 @@
 
                 <div class="table-responsive">
                     <table class="table table-bordered align-middle text-center">
+
                         <thead class="table-light">
                         <tr>
-                            <th style="width: 28%;">품목</th>
-                            <th style="width: 12%;">수량</th>
-                            <th style="width: 15%;">출고단가</th>
-                            <th style="width: 15%;">출고금액</th>
+                            <th style="width: 22%;">품목</th>
+                            <th style="width: 10%;">규격</th>
+                            <th style="width: 8%;">단위</th>
+                            <th style="width: 10%;">수량</th>
+                            <th style="width: 13%;">출고단가</th>
+                            <th style="width: 13%;">출고금액</th>
                             <th>비고</th>
-                            <th style="width: 8%;">삭제</th>
+                            <th style="width: 7%;">삭제</th>
                         </tr>
                         </thead>
 
@@ -109,14 +112,29 @@
                         <c:forEach var="detail" items="${outbound.detailList}" varStatus="status">
                             <tr>
                                 <td>
-                                    <select name="detailList[${status.index}].itemId" class="form-select" required>
+                                    <select name="detailList[${status.index}].itemId" class="form-select item-select" required onchange="changeItem(this)">
                                         <option value="">품목 선택</option>
+
                                         <c:forEach var="item" items="${itemList}">
-                                            <option value="${item.itemId}" ${detail.itemId == item.itemId ? 'selected' : ''}>
+                                            <option value="${item.itemId}"
+                                                    data-spec="${item.spec}"
+                                                    data-unit="${item.unit}"
+                                                    data-price="${item.salePrice}"
+                                                    ${detail.itemId == item.itemId ? 'selected' : ''}>
                                                 ${item.itemCode} - ${item.itemName}
                                             </option>
                                         </c:forEach>
                                     </select>
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control item-spec" readonly
+                                        value="<c:forEach var='item' items='${itemList}'><c:if test='${detail.itemId == item.itemId}'>${item.spec}</c:if></c:forEach>">
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control item-unit" readonly
+                                        value="<c:forEach var='item' items='${itemList}'><c:if test='${detail.itemId == item.itemId}'>${item.unit}</c:if></c:forEach>">
                                 </td>
 
                                 <td>
@@ -147,6 +165,17 @@
                         </c:forEach>
 
                         </tbody>
+
+                        <tfoot>
+                        <tr class="table-light fw-bold">
+                            <td colspan="3">합계</td>
+                            <td id="totalQuantity">0</td>
+                            <td></td>
+                            <td id="totalAmount">0.00</td>
+                            <td colspan="2"></td>
+                        </tr>
+                        </tfoot>
+
                     </table>
                 </div>
 
@@ -172,20 +201,33 @@
 
     function addDetailRow() {
         const tbody = document.getElementById("detailBody");
-
         const row = document.createElement("tr");
 
         row.innerHTML = `
             <td>
-                <select name="detailList[\${detailIndex}].itemId" class="form-select" required>
+                <select name="detailList[\${detailIndex}].itemId"
+                        class="form-select item-select"
+                        required
+                        onchange="changeItem(this)">
                     <option value="">품목 선택</option>
 
                     <c:forEach var="item" items="${itemList}">
-                        <option value="${item.itemId}">
+                        <option value="${item.itemId}"
+                                data-spec="${item.spec}"
+                                data-unit="${item.unit}"
+                                data-price="${item.salePrice}">
                             ${item.itemCode} - ${item.itemName}
                         </option>
                     </c:forEach>
                 </select>
+            </td>
+
+            <td>
+                <input type="text" class="form-control item-spec" readonly>
+            </td>
+
+            <td>
+                <input type="text" class="form-control item-unit" readonly>
             </td>
 
             <td>
@@ -199,7 +241,8 @@
             </td>
 
             <td>
-                <input type="number" name="detailList[\${detailIndex}].totalPrice" class="form-control total-price" step="0.01" min="0" readonly>
+                <input type="number" name="detailList[\${detailIndex}].totalPrice" class="form-control total-price"
+                    step="0.01" min="0" readonly>
             </td>
 
             <td>
@@ -217,6 +260,21 @@
         detailIndex++;
     }
 
+    function changeItem(select) {
+        const row = select.closest("tr");
+        const selectedOption = select.options[select.selectedIndex];
+
+        const spec = selectedOption.dataset.spec || "";
+        const unit = selectedOption.dataset.unit || "";
+        const price = selectedOption.dataset.price || 0;
+
+        row.querySelector(".item-spec").value = spec;
+        row.querySelector(".item-unit").value = unit;
+        row.querySelector(".unit-price").value = price;
+
+        calculateRow(select);
+    }
+
     function removeDetailRow(button) {
         const tbody = document.getElementById("detailBody");
 
@@ -225,8 +283,8 @@
             return;
         }
 
-        const tr = button.closest("tr");
-        tr.parentNode.removeChild(tr);
+        button.closest("tr").remove();
+        calculateTotal();
     }
 
     function calculateRow(input) {
@@ -240,5 +298,27 @@
         const unitPrice = Number(unitPriceInput.value || 0);
 
         totalPriceInput.value = (quantity * unitPrice).toFixed(2);
+
+        calculateTotal();
     }
+
+    function calculateTotal() {
+        let totalQuantity = 0;
+        let totalAmount = 0;
+
+        document.querySelectorAll("#detailBody tr").forEach(row => {
+            const quantity = Number(row.querySelector(".quantity").value || 0);
+            const totalPrice = Number(row.querySelector(".total-price").value || 0);
+
+            totalQuantity += quantity;
+            totalAmount += totalPrice;
+        });
+
+        document.getElementById("totalQuantity").innerText = totalQuantity;
+        document.getElementById("totalAmount").innerText = totalAmount.toFixed(2);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        calculateTotal();
+    });
 </script>

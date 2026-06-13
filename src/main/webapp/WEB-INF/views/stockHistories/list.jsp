@@ -18,13 +18,24 @@
             <form action="/stockHistories/list" method="get">
 
                 <div class="row g-3">
-
                     <div class="col-md-4">
+                        <label class="form-label">기간</label>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <input type="date" name="startDate" class="form-control" value="${searchDTO.startDate}">
+
+                            <span class="fw-bold">~</span>
+
+                            <input type="date" name="endDate" class="form-control" value="${searchDTO.endDate}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
                         <label class="form-label">검색어</label>
-                        <input type="text" name="keyword" class="form-control" value="${searchDTO.keyword}" placeholder="품목코드 / 품목명 / 창고명">
+                        <input type="text" name="keyword" class="form-control" value="${searchDTO.keyword}" placeholder="품목코드 / 품목명 / 창고명 / 입출고번호">
                     </div>
                
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label">이력유형</label>
                         <select name="historyType" class="form-select">
                             <option value="">전체</option>
@@ -49,7 +60,7 @@
                         </select>
                     </div>
 
-                    <div class="col-md-5 d-flex align-items-end justify-content-end">
+                    <div class="col-md-3 d-flex align-items-end justify-content-end">
                         <button type="submit" class="btn btn-primary me-2">
                             검색
                         </button>
@@ -85,6 +96,8 @@
                         <th>품목코드</th>
                         <th>품목명</th>
                         <th>창고명</th>
+                        <th>입고번호</th>
+                        <th>출고번호</th>
                         <th>변경전</th>
                         <th>변경수량</th>
                         <th>변경후</th>
@@ -128,7 +141,7 @@
                                     </c:when>                               
                                     <c:when test="${history.historyType == 'ADJUST'}">
                                         <span class="badge bg-warning text-dark">
-                                            재고조정
+                                            조정
                                         </span>
                                     </c:when>
                                     <c:when test="${history.historyType == 'OUTBOUND_CANCEL'}">
@@ -155,6 +168,29 @@
                             <td>${history.itemCode}</td>                 
                             <td>${history.itemName}</td>       
                             <td>${history.warehouseName}</td>
+
+                            <td>
+                                <c:choose>                           
+                                    <c:when test="${empty history.inboundNo}">
+                                        -
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${history.inboundNo}
+                                    </c:otherwise>       
+                                </c:choose>
+                            </td>
+
+                            <td>
+                                <c:choose>                           
+                                    <c:when test="${empty history.outboundNo}">
+                                        -
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${history.outboundNo}
+                                    </c:otherwise>       
+                                </c:choose>
+                            </td>
+                        
                             <td>${history.beforeQuantity}</td>
                          
                             <td>
@@ -179,7 +215,7 @@
   
                             <td>${history.afterQuantity}</td>                           
                             <td>${history.processUserName}</td>                        
-                            <td>${history.createdAt}</td>                        
+                            <td>${history.createdAtText}</td>                        
                             <td>${history.remark}</td>
 
                         </tr>

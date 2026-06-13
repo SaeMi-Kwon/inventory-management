@@ -83,8 +83,8 @@
     <select id="findInboundDetailList" parameterType="long" resultType="com.inventory.dto.InboundDetailViewDTO">
         SELECT
             D.INBOUND_DETAIL_ID AS inboundDetailId, D.INBOUND_ID AS inboundId, D.ITEM_ID AS itemId,
-            IT.ITEM_CODE AS itemCode, IT.ITEM_NAME AS itemName, D.QUANTITY AS quantity,
-            D.UNIT_PRICE AS unitPrice, D.TOTAL_PRICE AS totalPrice, D.REMARK AS remark
+            IT.ITEM_CODE AS itemCode, IT.ITEM_NAME AS itemName, IT.SPEC AS spec, IT.UNIT AS unit,
+            D.QUANTITY AS quantity, D.UNIT_PRICE AS unitPrice, D.TOTAL_PRICE AS totalPrice, D.REMARK AS remark
         FROM INBOUND_DETAILS D
         JOIN ITEMS IT ON D.ITEM_ID = IT.ITEM_ID
         WHERE D.INBOUND_ID = #{inboundId}

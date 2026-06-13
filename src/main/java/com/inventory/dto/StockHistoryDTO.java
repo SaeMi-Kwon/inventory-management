@@ -1,5 +1,6 @@
 package com.inventory.dto;
 
+import com.inventory.util.DateFormatUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,5 +21,9 @@ public class StockHistoryDTO {
     private Long processUserId;
     private String remark;
     private LocalDateTime createdAt;
+
+    public String getCreatedAtText() {
+        return DateFormatUtil.format(createdAt);
+    }
 
 }

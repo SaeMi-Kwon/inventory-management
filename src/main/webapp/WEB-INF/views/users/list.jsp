@@ -183,7 +183,7 @@
                                 </c:choose>
                             </td>
 
-                            <td>${user.createdAt}</td>
+                            <td>${user.createdAtText}</td>
 
                         </tr>
 

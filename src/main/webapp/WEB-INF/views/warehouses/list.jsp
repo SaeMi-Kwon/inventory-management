@@ -94,7 +94,7 @@
                             </td>
 
                             <td>${warehouse.remark}</td>
-                            <td>${warehouse.createdAt}</td>
+                            <td>${warehouse.createdAtText}</td>
 
                         </tr>
 

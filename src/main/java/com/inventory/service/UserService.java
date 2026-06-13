@@ -1,8 +1,9 @@
 package com.inventory.service;
 
 
-import com.inventory.dto.CustomerDTO;
+import com.inventory.dto.AuthorityDTO;
 import com.inventory.dto.LoginDTO;
+import com.inventory.dto.PasswordResetDTO;
 import com.inventory.dto.UserDTO;
 import com.inventory.exception.CustomException;
 import com.inventory.exception.ErrorCode;
@@ -20,7 +21,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     //권한리스트
-    public List<CustomerDTO> findAuthorityList(){
+    public List<AuthorityDTO> findAuthorityList(){
         return userMapper.findAuthorityList();
     }
 
@@ -54,7 +55,7 @@ public class UserService {
         userMapper.updateUser(userDTO);
     }
 
-    //사용자 비번초기화
+    // 관리자 : 사용자 비번초기화
     public void resetPassword(Long userId){
         UserDTO userDTO = new UserDTO();
 
@@ -82,5 +83,27 @@ public class UserService {
         }
 
         return user;
+    }
+
+    // 비밀번호 재설정
+    public void resetByUserPassword(PasswordResetDTO passwordResetDTO){
+        UserDTO user = userMapper.findUserByEmployeeId(passwordResetDTO.getEmployeeId());
+
+        if (user == null ||
+                !passwordEncoder.matches(passwordResetDTO.getCurrentPassword(), user.getPassword())){
+            throw new CustomException(ErrorCode.LOGIN_FAIL);
+        }
+
+        if (!passwordResetDTO.getNewPassword().equals(passwordResetDTO.getConfirmPassword())) {
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+        }
+
+        String encodedPassword = passwordEncoder.encode(passwordResetDTO.getNewPassword());
+
+        UserDTO updateUser = new UserDTO();
+        updateUser.setUserId(user.getUserId());
+        updateUser.setPassword(encodedPassword);
+
+        userMapper.resetPassword(updateUser);
     }
 }

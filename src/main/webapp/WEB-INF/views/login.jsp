@@ -40,6 +40,13 @@
 
                     </c:if>
 
+                    <!-- 비밀번호 변경 후 -->
+                    <c:if test="${param.reset == 'true'}">
+                        <div class="alert alert-success">
+                            비밀번호가 변경되었습니다. 새 비밀번호로 로그인해주세요.
+                        </div>
+                    </c:if>
+
 
                     <!-- 로그인 폼 -->
                     <form action="/login" method="post">
@@ -59,11 +66,15 @@
 
                         <!-- 버튼 -->
                         <div class="d-grid">
-
                             <button type="submit" class="btn btn-primary">
                                 로그인
                             </button>
+                        </div>
 
+                        <div class="text-end mt-3">
+                            <a href="/users/password/reset" class="text-decoration-none text-secondary">
+                                비밀번호 재설정
+                            </a>
                         </div>
 
                     </form>

@@ -7,32 +7,34 @@
         <h3>출고 상세</h3>
 
         <div>
-            <c:if test="${outbound.status == 'DRAFT'}">
+            <c:if test="${sessionScope.loginUser.authCode == 'MANAGER'}">
+                <c:if test="${outbound.status == 'DRAFT'}">
 
-                <a href="/outbounds/edit/${outbound.outboundId}" class="btn btn-warning">
-                    수정
-                </a>
+                    <a href="/outbounds/edit/${outbound.outboundId}" class="btn btn-warning">
+                        수정
+                    </a>
 
-                <form action="/outbounds/complete/${outbound.outboundId}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-success" onclick="return confirm('출고완료 처리하시겠습니까? 완료 후 재고가 차감됩니다.');">
-                        출고완료
-                    </button>
-                </form>
+                    <form action="/outbounds/complete/${outbound.outboundId}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-success" onclick="return confirm('출고완료 처리하시겠습니까? 완료 후 재고가 차감됩니다.');">
+                            출고완료
+                        </button>
+                    </form>
 
-                <form action="/outbounds/cancel/${outbound.outboundId}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('출고를 취소하시겠습니까?');">
-                        취소
-                    </button>
-                </form>
+                    <form action="/outbounds/cancel/${outbound.outboundId}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('출고를 취소하시겠습니까?');">
+                            취소
+                        </button>
+                    </form>
 
-            </c:if>
+                </c:if>
 
-            <c:if test="${outbound.status == 'COMPLETED'}">
-                <form action="/outbounds/cancelCompleted/${outbound.outboundId}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('완료된 출고를 취소하시겠습니까? 취소하면 재고가 다시 증가합니다.');">
-                        출고취소
-                    </button>
-                </form>
+                <c:if test="${outbound.status == 'COMPLETED'}">
+                    <form action="/outbounds/cancelCompleted/${outbound.outboundId}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('완료된 출고를 취소하시겠습니까? 취소하면 재고가 다시 증가합니다.');">
+                            출고취소
+                        </button>
+                    </form>
+                </c:if>
             </c:if>
 
             <a href="/outbounds/list" class="btn btn-secondary">
@@ -96,7 +98,7 @@
                     <td>${outbound.createdUserName}</td>
 
                     <th>등록일시</th>
-                    <td>${outbound.createdAt}</td>
+                    <td>${outbound.createdAtText}</td>
                 </tr>
 
                 <tr>
@@ -118,6 +120,8 @@
                 <tr>
                     <th>품목코드</th>
                     <th>품목명</th>
+                    <th>규격</th>
+                    <th>단위</th>
                     <th>수량</th>
                     <th>출고단가</th>
                     <th>출고금액</th>
@@ -136,6 +140,8 @@
                     <tr>
                         <td>${detail.itemCode}</td>
                         <td>${detail.itemName}</td>
+                        <td>${detail.spec}</td>
+                        <td>${detail.unit}</td>
                         <td>${detail.quantity}</td>
                         <td>${detail.unitPrice}</td>
                         <td>${detail.totalPrice}</td>

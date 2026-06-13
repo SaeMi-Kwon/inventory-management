@@ -1,5 +1,6 @@
 package com.inventory.dto;
 
+import com.inventory.util.DateFormatUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,4 +27,11 @@ public class InboundViewDTO {
 
     private List<InboundDetailViewDTO> detailList;
 
+    public String getCreatedAtText() {
+        return DateFormatUtil.format(createdAt);
+    }
+
+    public String getUpdatedAtText() {
+        return DateFormatUtil.format(updatedAt);
+    }
 }

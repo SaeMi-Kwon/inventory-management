@@ -1,5 +1,6 @@
 package com.inventory.dto;
 
+import com.inventory.util.DateFormatUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerDTO {
-
     private Long customerId;
     private String customerCode;
     private String customerName;
@@ -28,4 +28,12 @@ public class CustomerDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+
+    public String getCreatedAtText() {
+        return DateFormatUtil.format(createdAt);
+    }
+
+    public String getUpdatedAtText() {
+        return DateFormatUtil.format(updatedAt);
+    }
 }

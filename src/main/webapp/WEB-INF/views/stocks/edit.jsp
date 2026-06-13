@@ -3,7 +3,7 @@
 <div class="container-fluid">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>현재고 수정</h3>
+        <h3>재고 수정</h3>
 
         <a href="/stocks/list" class="btn btn-secondary">
             목록

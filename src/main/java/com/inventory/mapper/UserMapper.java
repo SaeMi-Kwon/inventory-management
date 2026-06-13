@@ -1,5 +1,6 @@
 package com.inventory.mapper;
 
+import com.inventory.dto.AuthorityDTO;
 import com.inventory.dto.CustomerDTO;
 import com.inventory.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -9,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    List<CustomerDTO> findAuthorityList();
+    List<AuthorityDTO> findAuthorityList();
 
     int countByEmployeeId(String employeeId);
 
@@ -25,4 +26,7 @@ public interface UserMapper {
 
     //로그인
     UserDTO findUserByEmployeeId(String employeeId);
+
+
+
 }

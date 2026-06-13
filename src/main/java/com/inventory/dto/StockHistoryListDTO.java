@@ -1,5 +1,6 @@
 package com.inventory.dto;
 
+import com.inventory.util.DateFormatUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,8 @@ public class StockHistoryListDTO {
     private String historyType;
     private Long inboundId;
     private Long outboundId;
+    private String inboundNo;
+    private String outboundNo;
     private Integer beforeQuantity;
     private Integer changeQuantity;
     private Integer afterQuantity;
@@ -27,4 +30,10 @@ public class StockHistoryListDTO {
 
     // 검색용
     private String keyword;
+    private String startDate;
+    private String endDate;
+
+    public String getCreatedAtText() {
+        return DateFormatUtil.format(createdAt);
+    }
 }

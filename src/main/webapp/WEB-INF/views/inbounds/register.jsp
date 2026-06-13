@@ -101,57 +101,76 @@
                     <table class="table table-bordered align-middle text-center">
 
                         <thead class="table-light">
-                            <tr>
-                                <th style="width: 28%;">품목</th>
-                                <th style="width: 12%;">수량</th>
-                                <th style="width: 15%;">입고단가</th>
-                                <th style="width: 15%;">입고금액</th>
-                                <th>비고</th>
-                                <th style="width: 8%;">삭제</th>
-                            </tr>
+                        <tr>
+                            <th style="width: 22%;">품목</th>
+                            <th style="width: 10%;">규격</th>
+                            <th style="width: 8%;">단위</th>
+                            <th style="width: 10%;">수량</th>
+                            <th style="width: 13%;">입고단가</th>
+                            <th style="width: 13%;">입고금액</th>
+                            <th>비고</th>
+                            <th style="width: 7%;">삭제</th>
+                        </tr>
                         </thead>
 
                         <tbody id="detailBody">
+                        <tr>
+                            <td>
+                                <select name="detailList[0].itemId" class="form-select item-select" required onchange="changeItem(this)">
+                                    <option value="">품목 선택</option>
 
-                            <tr>
-                                <td>
-                                    <select name="detailList[0].itemId" class="form-select" required>
-                                        <option value="">품목 선택</option>
-                                        <c:forEach var="item" items="${itemList}">
-                                            <option value="${item.itemId}">
-                                                ${item.itemCode} - ${item.itemName}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </td>
+                                    <c:forEach var="item" items="${itemList}">
+                                        <option value="${item.itemId}" data-spec="${item.spec}" data-unit="${item.unit}" data-price="${item.purchasePrice}">
+                                            ${item.itemCode} - ${item.itemName}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </td>
 
-                                <td>
-                                    <input type="number" name="detailList[0].quantity" class="form-control quantity" 
-                                        min="1" required oninput="calculateRow(this)">
-                                </td>
+                            <td>
+                                <input type="text" class="form-control item-spec" readonly>
+                            </td>
 
-                                <td>
-                                    <input type="number" name="detailList[0].unitPrice" class="form-control unit-price"
-                                        step="0.01" min="0" oninput="calculateRow(this)">
-                                </td>
+                            <td>
+                                <input type="text" class="form-control item-unit" readonly>
+                            </td>
 
-                                <td>
-                                    <input type="number" name="detailList[0].totalPrice" class="form-control total-price"
-                                        step="0.01" min="0" readonly>
-                                </td>
+                            <td>
+                                <input type="number" name="detailList[0].quantity" class="form-control quantity" 
+                                    min="1" required oninput="calculateRow(this)">
+                            </td>
 
-                                <td>
-                                    <input type="text" name="detailList[0].remark" class="form-control">
-                                </td>
+                            <td>
+                                <input type="number" name="detailList[0].unitPrice" class="form-control unit-price"
+                                    step="0.01" min="0" oninput="calculateRow(this)">
+                            </td>
 
-                                <td>
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeDetailRow(this)">
-                                        삭제
-                                    </button>
-                                </td>
-                            </tr>
+                            <td>
+                                <input type="number" name="detailList[0].totalPrice" class="form-control total-price"
+                                    step="0.01" min="0" readonly>
+                            </td>
 
+                            <td>
+                                <input type="text" name="detailList[0].remark" class="form-control">
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeDetailRow(this)">
+                                    삭제
+                                </button>
+                            </td>
+                        </tr>
                         </tbody>
+
+                        <tfoot>
+                            <tr class="table-light fw-bold">
+                                <td colspan="3">합계</td>
+                                <td id="totalQuantity">0</td>
+                                <td></td>
+                                <td id="totalAmount">0.00</td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
 
                     </table>
                 </div>
@@ -182,11 +201,15 @@
 
                 row.innerHTML = `
                     <td>
-                        <select name="detailList[\${detailIndex}].itemId" class="form-select" required>
+                        <select name="detailList[\${detailIndex}].itemId" class="form-select item-select"
+                            required onchange="changeItem(this)">
                             <option value="">품목 선택</option>
 
                             <c:forEach var="item" items="${itemList}">
-                                <option value="${item.itemId}">
+                                <option value="${item.itemId}"
+                                        data-spec="${item.spec}"
+                                        data-unit="${item.unit}"
+                                        data-price="${item.purchasePrice}">
                                     ${item.itemCode} - ${item.itemName}
                                 </option>
                             </c:forEach>
@@ -194,14 +217,21 @@
                     </td>
 
                     <td>
-                        <input type="number"
-                            name="detailList[\${detailIndex}].quantity" class="form-control quantity"
+                        <input type="text" class="form-control item-spec" readonly>
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control item-unit" readonly>
+                    </td>
+
+                    <td>
+                        <input type="number" name="detailList[\${detailIndex}].quantity" class="form-control quantity"
                             min="1" required oninput="calculateRow(this)">
                     </td>
 
                     <td>
-                        <input type="number" name="detailList[\${detailIndex}].unitPrice"
-                            class="form-control unit-price" step="0.01" min="0" oninput="calculateRow(this)">
+                        <input type="number" name="detailList[\${detailIndex}].unitPrice" class="form-control unit-price"
+                            step="0.01" min="0" oninput="calculateRow(this)">
                     </td>
 
                     <td>
@@ -224,6 +254,21 @@
                 detailIndex++;
             }
 
+            function changeItem(select) {
+                const row = select.closest("tr");
+                const selectedOption = select.options[select.selectedIndex];
+
+                const spec = selectedOption.dataset.spec || "";
+                const unit = selectedOption.dataset.unit || "";
+                const price = selectedOption.dataset.price || 0;
+
+                row.querySelector(".item-spec").value = spec;
+                row.querySelector(".item-unit").value = unit;
+                row.querySelector(".unit-price").value = price;
+
+                calculateRow(select);
+            }
+
             // 행 삭제
             function removeDetailRow(button) {
                 const tbody = document.getElementById("detailBody");
@@ -238,6 +283,8 @@
                 //tr.parentNode.removeChild(tr);
 
                 button.closest("tr").remove();
+                
+                calculateTotal();
             }
 
             // 입고금액(수량 * 단가)
@@ -252,7 +299,26 @@
 
                 // .toFixed(2) 소수점 둘째자리까지 표시
                 totalPriceInput.value = (quantity * unitPrice).toFixed(2);
+
+                calculateTotal();
             }
+
+            function calculateTotal() {
+                let totalQuantity = 0;
+                let totalAmount = 0;
+
+                document.querySelectorAll("#detailBody tr").forEach(row => {
+                    const quantity = Number(row.querySelector(".quantity").value || 0);
+                    const totalPrice = Number(row.querySelector(".total-price").value || 0);
+
+                    totalQuantity += quantity;
+                    totalAmount += totalPrice;
+                });
+
+                document.getElementById("totalQuantity").innerText = totalQuantity;
+                document.getElementById("totalAmount").innerText = totalAmount.toFixed(2);
+            }
+
         </script>
 
     </form>

@@ -19,12 +19,14 @@
     <!-- 재고이력 목록 조회 -->
     <select id="findStockHistoryList" parameterType="com.inventory.dto.StockHistoryListDTO" resultType="com.inventory.dto.StockHistoryListDTO">
         SELECT
-            H.HISTORY_ID AS historyId, H.HISTORY_TYPE AS historyType, H.INBOUND_ID AS inboundId,
-            H.OUTBOUND_ID AS outboundId, H.BEFORE_QUANTITY AS beforeQuantity, H.CHANGE_QUANTITY AS changeQuantity,
-            H.AFTER_QUANTITY AS afterQuantity, H.ITEM_ID AS itemId, I.ITEM_CODE AS itemCode, I.ITEM_NAME AS itemName,
-            H.WAREHOUSE_ID AS warehouseId, W.WAREHOUSE_NAME AS warehouseName, H.PROCESS_USER_ID AS processUserId,
-            U.NAME AS processUserName, H.REMARK AS remark, H.CREATED_AT AS createdAt
+            H.HISTORY_ID AS historyId, H.HISTORY_TYPE AS historyType, H.INBOUND_ID AS inboundId, N.INBOUND_NO AS inboundNo,
+            O.OUTBOUND_NO AS outboundNo, H.OUTBOUND_ID AS outboundId, H.BEFORE_QUANTITY AS beforeQuantity,
+            H.CHANGE_QUANTITY AS changeQuantity, H.AFTER_QUANTITY AS afterQuantity, H.ITEM_ID AS itemId, I.ITEM_CODE AS itemCode,
+            I.ITEM_NAME AS itemName, H.WAREHOUSE_ID AS warehouseId, W.WAREHOUSE_NAME AS warehouseName,
+            H.PROCESS_USER_ID AS processUserId, U.NAME AS processUserName, H.REMARK AS remark, H.CREATED_AT AS createdAt
         FROM STOCK_HISTORIES H
+        LEFT JOIN INBOUNDS N ON H.INBOUND_ID = N.INBOUND_ID
+        LEFT JOIN OUTBOUNDS O ON H.OUTBOUND_ID = O.OUTBOUND_ID
         JOIN ITEMS I ON H.ITEM_ID = I.ITEM_ID
         JOIN WAREHOUSES W ON H.WAREHOUSE_ID = W.WAREHOUSE_ID
         JOIN USERS U ON H.PROCESS_USER_ID = U.USER_ID
@@ -35,11 +37,21 @@
                 I.ITEM_CODE LIKE CONCAT('%', #{keyword}, '%')
                 OR I.ITEM_NAME LIKE CONCAT('%', #{keyword}, '%')
                 OR W.WAREHOUSE_NAME LIKE CONCAT('%', #{keyword}, '%')
+                OR N.INBOUND_NO LIKE CONCAT('%', #{keyword}, '%')
+                OR O.OUTBOUND_NO LIKE CONCAT('%', #{keyword}, '%')
             )
         </if>
 
         <if test="historyType != null and historyType != ''">
             AND H.HISTORY_TYPE = #{historyType}
+        </if>
+
+        <if test="startDate != null and startDate != ''">
+            AND DATE(H.CREATED_AT) &gt;= #{startDate}
+        </if>
+
+        <if test="endDate != null and endDate != ''">
+            AND DATE(H.CREATED_AT) &lt;= #{endDate}
         </if>
 
         ORDER BY H.HISTORY_ID DESC

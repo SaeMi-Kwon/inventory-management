@@ -6,7 +6,7 @@
 <mapper namespace="com.inventory.mapper.UserMapper">
 
     <!-- 권한 목록 조회 -->
-    <select id="findAuthorityList" resultType="com.inventory.dto.CustomerDTO">
+    <select id="findAuthorityList" resultType="com.inventory.dto.AuthorityDTO">
         SELECT
             AUTH_ID AS authId, AUTH_CODE AS authCode,
             AUTH_NAME AS authName, DESCRIPTION AS description
@@ -116,7 +116,6 @@
         FROM USERS U
         JOIN AUTHORITY_CODE A ON U.AUTH_ID = A.AUTH_ID
         WHERE U.EMPLOYEE_ID = #{employeeId}
-
     </select>
 
 </mapper>

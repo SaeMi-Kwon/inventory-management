@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <div class="container-fluid">
 
@@ -6,9 +7,18 @@
         <h3>거래처 상세보기</h3>
 
         <div class="d-flex gap-2">
-            <a href="/customers/edit/${customer.customerId}" class="btn btn-primary">
-                수정
-            </a>
+            <c:choose>
+                <c:when test="${sessionScope.loginUser.authCode == 'MANAGER'}">
+                    <a href="/customers/edit/${customer.customerId}" class="btn btn-primary">
+                        수정
+                    </a>
+                </c:when>
+                <c:when test="${sessionScope.loginUser.authCode == 'STAFF'}">
+                    <a href="#" class="btn btn-primary disabled" aria-disabled="true" tabindex="-1">
+                        수정
+                    </a>
+                </c:when>
+            </c:choose>
 
             <a href="/customers/list" class="btn btn-secondary">
                 목록
@@ -85,12 +95,12 @@
 
                 <tr>
                     <th>등록일시</th>
-                    <td>${customer.createdAt}</td>
+                    <td>${customer.createdAtText}</td>
                 </tr>
 
                 <tr>
                     <th>수정일시</th>
-                    <td>${customer.updatedAt}</td>
+                    <td>${customer.updatedAtText}</td>
                 </tr>
 
             </table>

@@ -7,9 +7,18 @@
         <h3>품목 상세보기</h3>
 
         <div class="d-flex gap-2">
-            <a href="/items/edit/${item.itemId}" class="btn btn-primary">
-                수정
-            </a>
+            <c:choose>
+                <c:when test="${sessionScope.loginUser.authCode == 'MANAGER'}">
+                    <a href="/items/edit/${item.itemId}" class="btn btn-primary">
+                        수정
+                    </a>
+                </c:when>
+                <c:when test="${sessionScope.loginUser.authCode == 'STAFF'}">
+                    <a href="#" class="btn btn-primary disabled" aria-disabled="true" tabindex="-1">
+                        수정
+                    </a>
+                </c:when>
+            </c:choose>
 
             <a href="/items/list" class="btn btn-secondary">
                 목록
@@ -85,12 +94,12 @@
 
                 <tr>
                     <th>등록일시</th>
-                    <td>${item.createdAt}</td>
+                    <td>${item.createdAtText}</td>
                 </tr>
 
                 <tr>
                     <th>수정일시</th>
-                    <td>${item.updatedAt}</td>
+                    <td>${item.updatedAtText}</td>
                 </tr>
 
             </table>
